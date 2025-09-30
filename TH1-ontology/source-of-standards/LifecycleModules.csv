@@ -1,0 +1,18 @@
+code,name,stage,description
+A1,Raw material supply,A,Includes raw material extraction and transport to manufacturing.
+A2,Transport,A,Covers transport of raw materials to manufacturing plant.
+A3,Manufacturing,A,Covers product manufacturing and processing.
+A4,Transport to site,A,Covers product transport from factory to construction site.
+A5,Construction and installation process,A,Covers all construction and installation activities on site.
+B1,Use,B,Includes emissions/releases during the use phase of the building.
+B2,Maintenance,B,Covers regular activities to maintain building performance.
+B3,Repair,B,Covers activities to restore damaged or worn components.
+B4,Replacement,B,Includes replacement of components due to damage or end-of-life.
+B5,Refurbishment,B,Covers major renovations or alterations to the building.
+B6,Operational energy use,B,Covers all energy consumed during building operation.
+B7,Operational water use,B,Covers all water consumption during building operation.
+C1,Deconstruction / Demolition,C,Covers demolition activities at end-of-life.
+C2,Transport (waste),C,Covers transport of waste materials from site to processing facilities.
+C3,Waste processing,C,Covers sorting and preparation of waste for reuse, recycling, or energy recovery.
+C4,Disposal,C,Covers final disposal (e.g., landfill, incineration) of materials.
+D,Benefits beyond the system boundary,D,Covers potential benefits from reuse, recycling, and recovery after end-of-life.
