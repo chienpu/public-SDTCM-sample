@@ -1,0 +1,31 @@
+Lifecycle Stage,ObservationEvent Type,Data Feature,Example,Temporal,Spatial,Empirical
+C1–C4 End-of-life,Demolition / recycling record,End-of-life activity: Demolition of 500 m³ concrete,Demolition of 500 m³ concrete → 45 tons CO₂e,C1–C4,IfcWall,Waste transport logs / recycling EPDs
+C1–C4 End-of-life,Demolition / recycling record,End-of-life activity: Steel beam dismantling (50 tons),Steel beam dismantling (50 tons) → 5 tons CO₂e,C1–C4,IfcBeam,Waste transport logs / recycling EPDs
+C1–C4 End-of-life,Demolition / recycling record,End-of-life activity: Window glass recycling (200 m²),Window glass recycling (200 m²) → 1 ton CO₂e avoided,C1–C4,IfcWindow,Waste transport logs / recycling EPDs
+C1–C4 End-of-life,Demolition / recycling record,End-of-life activity: Door disposal (100 units),Door disposal (100 units) → 0.5 ton CO₂e,C1–C4,IfcDoor,Waste transport logs / recycling EPDs
+C1–C4 End-of-life,Demolition / recycling record,End-of-life activity: Roof membrane removal,Roof membrane removal → 2 tons CO₂e,C1–C4,IfcRoof,Waste transport logs / recycling EPDs
+C1–C4 End-of-life,Demolition / recycling record,"End-of-life activity: Floor tile demolition (1,000 m²)","Floor tile demolition (1,000 m²) → 8 tons CO₂e",C1–C4,IfcSlab,Waste transport logs / recycling EPDs
+C1–C4 End-of-life,Demolition / recycling record,End-of-life activity: Brick wall demolition (100 m³),Brick wall demolition (100 m³) → 10 tons CO₂e,C1–C4,IfcWall,Waste transport logs / recycling EPDs
+C1–C4 End-of-life,Demolition / recycling record,End-of-life activity: Timber recycling (20 m³),Timber recycling (20 m³) → Stored 5 tons CO₂e,C1–C4,IfcColumn,Waste transport logs / recycling EPDs
+C1–C4 End-of-life,Demolition / recycling record,End-of-life activity: Copper cable recycling (1 ton),Copper cable recycling (1 ton) → 1.2 tons CO₂e avoided,C1–C4,IfcCableSegment,Waste transport logs / recycling EPDs
+C1–C4 End-of-life,Demolition / recycling record,End-of-life activity: PVC pipe disposal (500 m),PVC pipe disposal (500 m) → 3 tons CO₂e,C1–C4,IfcPipeSegment,Waste transport logs / recycling EPDs
+C1–C4 End-of-life,Demolition / recycling record,End-of-life activity: Asphalt pavement milling (100 tons),Asphalt pavement milling (100 tons) → 15 tons CO₂e,C1–C4,IfcSlab,Waste transport logs / recycling EPDs
+C1–C4 End-of-life,Demolition / recycling record,End-of-life activity: Steel plate recycling (10 tons),Steel plate recycling (10 tons) → 12 tons CO₂e avoided,C1–C4,IfcPlate,Waste transport logs / recycling EPDs
+C1–C4 End-of-life,Demolition / recycling record,End-of-life activity: Gypsum board disposal (500 m²),Gypsum board disposal (500 m²) → 2 tons CO₂e,C1–C4,IfcWall,Waste transport logs / recycling EPDs
+C1–C4 End-of-life,Demolition / recycling record,End-of-life activity: Insulation foam incineration (100 m³),Insulation foam incineration (100 m³) → 20 tons CO₂e,C1–C4,IfcCovering,Waste transport logs / recycling EPDs
+C1–C4 End-of-life,Demolition / recycling record,End-of-life activity: Stone cladding demolition (200 m²),Stone cladding demolition (200 m²) → 7 tons CO₂e,C1–C4,IfcWall,Waste transport logs / recycling EPDs
+C1–C4 End-of-life,Demolition / recycling record,End-of-life activity: Ceramic tile disposal (300 m²),Ceramic tile disposal (300 m²) → 1.5 tons CO₂e,C1–C4,IfcCovering,Waste transport logs / recycling EPDs
+C1–C4 End-of-life,Demolition / recycling record,End-of-life activity: HVAC duct dismantling (200 m),HVAC duct dismantling (200 m) → 4 tons CO₂e,C1–C4,IfcFlowSegment,Waste transport logs / recycling EPDs
+C1–C4 End-of-life,Demolition / recycling record,End-of-life activity: Chiller disposal (2 units),Chiller disposal (2 units) → 6 tons CO₂e,C1–C4,IfcBuildingSystem,Waste transport logs / recycling EPDs
+C1–C4 End-of-life,Demolition / recycling record,End-of-life activity: Solar panel recycling (100 m²),Solar panel recycling (100 m²) → 3 tons CO₂e avoided,C1–C4,IfcBuildingElementProxy,Waste transport logs / recycling EPDs
+C1–C4 End-of-life,Demolition / recycling record,End-of-life activity: Battery recycling (1 ton),Battery recycling (1 ton) → 2 tons CO₂e avoided,C1–C4,IfcBuildingSystem,Waste transport logs / recycling EPDs
+C1–C4 End-of-life,Demolition / recycling record,End-of-life activity: Aluminum frame dismantling (2 tons),Aluminum frame dismantling (2 tons) → 16 tons CO₂e,C1–C4,IfcDoor,Waste transport logs / recycling EPDs
+C1–C4 End-of-life,Demolition / recycling record,End-of-life activity: Glass wool insulation disposal (500 m²),Glass wool insulation disposal (500 m²) → 5 tons CO₂e,C1–C4,IfcCovering,Waste transport logs / recycling EPDs
+C1–C4 End-of-life,Demolition / recycling record,End-of-life activity: Timber waste incineration (10 m³),Timber waste incineration (10 m³) → 4 tons CO₂e,C1–C4,IfcBeam,Waste transport logs / recycling EPDs
+C1–C4 End-of-life,Demolition / recycling record,End-of-life activity: Lighting fixture disposal (200 units),Lighting fixture disposal (200 units) → 1 ton CO₂e,C1–C4,IfcFlowTerminal,Waste transport logs / recycling EPDs
+C1–C4 End-of-life,Demolition / recycling record,End-of-life activity: Elevator dismantling (1 unit),Elevator dismantling (1 unit) → 10 tons CO₂e,C1–C4,IfcTransportElement,Waste transport logs / recycling EPDs
+C1–C4 End-of-life,Demolition / recycling record,End-of-life activity: Pipe network demolition (1 km),Pipe network demolition (1 km) → 25 tons CO₂e,C1–C4,IfcPipeSegment,Waste transport logs / recycling EPDs
+C1–C4 End-of-life,Demolition / recycling record,End-of-life activity: Reinforcement bar recycling (20 tons),Reinforcement bar recycling (20 tons) → 15 tons CO₂e avoided,C1–C4,IfcBeam,Waste transport logs / recycling EPDs
+C1–C4 End-of-life,Demolition / recycling record,End-of-life activity: Concrete crushing for reuse (200 m³),Concrete crushing for reuse (200 m³) → 8 tons CO₂e avoided,C1–C4,IfcWall,Waste transport logs / recycling EPDs
+C1–C4 End-of-life,Demolition / recycling record,End-of-life activity: Ceramic sanitary ware disposal (50 units),Ceramic sanitary ware disposal (50 units) → 2 tons CO₂e,C1–C4,IfcFlowTerminal,Waste transport logs / recycling EPDs
+C1–C4 End-of-life,Demolition / recycling record,End-of-life activity: Demolition waste transport (100 tons),Demolition waste transport (100 tons) → 12 tons CO₂e,C1–C4,IfcSite,Waste transport logs / recycling EPDs

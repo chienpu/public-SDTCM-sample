@@ -1,0 +1,31 @@
+Lifecycle Stage,ObservationEvent Type,Data Feature,Example,Temporal,Spatial,Empirical
+B2–B5 Use stage,Maintenance / repair record,Maintenance impact: Chiller replacement reduced energy,Chiller replacement reduced energy → 15% less electricity,B2–B5,IfcBuildingSystem,Maintenance logs / IoT delta readings
+B2–B5 Use stage,Maintenance / repair record,Maintenance impact: Pump-02 repair improved efficiency,Pump-02 repair improved efficiency → 10% less kWh,B2–B5,IfcFlowSegment,Maintenance logs / IoT delta readings
+B2–B5 Use stage,Maintenance / repair record,Maintenance impact: Filter change in AHU-01,Filter change in AHU-01 → 5% energy savings,B2–B5,IfcSystem,Maintenance logs / IoT delta readings
+B2–B5 Use stage,Maintenance / repair record,Maintenance impact: Lighting retrofit to LED,Lighting retrofit to LED → 40% less electricity,B2–B5,IfcSpace,Maintenance logs / IoT delta readings
+B2–B5 Use stage,Maintenance / repair record,Maintenance impact: Elevator modernization,Elevator modernization → 20% less kWh per trip,B2–B5,IfcTransportElement,Maintenance logs / IoT delta readings
+B2–B5 Use stage,Maintenance / repair record,Maintenance impact: Cooling tower cleaning,Cooling tower cleaning → 8% less energy,B2–B5,IfcBuildingSystem,Maintenance logs / IoT delta readings
+B2–B5 Use stage,Maintenance / repair record,Maintenance impact: Boiler descaling maintenance,Boiler descaling maintenance → 7% efficiency gain,B2–B5,IfcBuildingSystem,Maintenance logs / IoT delta readings
+B2–B5 Use stage,Maintenance / repair record,Maintenance impact: Window glazing replacement,Window glazing replacement → Reduced heating load 12%,B2–B5,IfcWindow,Maintenance logs / IoT delta readings
+B2–B5 Use stage,Maintenance / repair record,Maintenance impact: Roof insulation repair,Roof insulation repair → 10% less heating energy,B2–B5,IfcRoof,Maintenance logs / IoT delta readings
+B2–B5 Use stage,Maintenance / repair record,Maintenance impact: Pipe leakage repair,Pipe leakage repair → Saved 15 m³ water/day,B2–B5,IfcPipeSegment,Maintenance logs / IoT delta readings
+B2–B5 Use stage,Maintenance / repair record,Maintenance impact: Pump bearing replacement,Pump bearing replacement → Reduced vibration and kWh,B2–B5,IfcFlowSegment,Maintenance logs / IoT delta readings
+B2–B5 Use stage,Maintenance / repair record,Maintenance impact: Fan belt replacement,Fan belt replacement → Energy restored to normal,B2–B5,IfcFlowTerminal,Maintenance logs / IoT delta readings
+B2–B5 Use stage,Maintenance / repair record,Maintenance impact: Chiller compressor replacement,Chiller compressor replacement → 20% energy reduction,B2–B5,IfcBuildingSystem,Maintenance logs / IoT delta readings
+B2–B5 Use stage,Maintenance / repair record,Maintenance impact: Air duct sealing,Air duct sealing → Reduced leakage by 12%,B2–B5,IfcFlowSegment,Maintenance logs / IoT delta readings
+B2–B5 Use stage,Maintenance / repair record,Maintenance impact: Cooling coil cleaning,Cooling coil cleaning → Improved COP 10%,B2–B5,IfcSystem,Maintenance logs / IoT delta readings
+B2–B5 Use stage,Maintenance / repair record,Maintenance impact: Lighting sensor installation,Lighting sensor installation → Saved 8% electricity,B2–B5,IfcSpace,Maintenance logs / IoT delta readings
+B2–B5 Use stage,Maintenance / repair record,Maintenance impact: Motor rewinding,Motor rewinding → Efficiency restored by 6%,B2–B5,IfcBuildingSystem,Maintenance logs / IoT delta readings
+B2–B5 Use stage,Maintenance / repair record,Maintenance impact: Transformer maintenance,Transformer maintenance → Loss reduced by 3%,B2–B5,IfcBuildingSystem,Maintenance logs / IoT delta readings
+B2–B5 Use stage,Maintenance / repair record,Maintenance impact: Building automation tuning,Building automation tuning → Saved 5% HVAC energy,B2–B5,IfcSystem,Maintenance logs / IoT delta readings
+B2–B5 Use stage,Maintenance / repair record,Maintenance impact: Valve replacement,Valve replacement → Reduced water waste,B2–B5,IfcPipeSegment,Maintenance logs / IoT delta readings
+B2–B5 Use stage,Maintenance / repair record,Maintenance impact: Solar panel cleaning,Solar panel cleaning → Restored 8% output,B2–B5,IfcBuildingElementProxy,Maintenance logs / IoT delta readings
+B2–B5 Use stage,Maintenance / repair record,Maintenance impact: Battery replacement,Battery replacement → Ensured stable energy,B2–B5,IfcBuildingSystem,Maintenance logs / IoT delta readings
+B2–B5 Use stage,Maintenance / repair record,Maintenance impact: Cooling pump impeller replacement,Cooling pump impeller replacement → Improved flow 9%,B2–B5,IfcFlowSegment,Maintenance logs / IoT delta readings
+B2–B5 Use stage,Maintenance / repair record,Maintenance impact: Filter maintenance in FCU,Filter maintenance in FCU → Improved airflow 6%,B2–B5,IfcFlowTerminal,Maintenance logs / IoT delta readings
+B2–B5 Use stage,Maintenance / repair record,Maintenance impact: Duct insulation repair,Duct insulation repair → Reduced losses by 5%,B2–B5,IfcFlowSegment,Maintenance logs / IoT delta readings
+B2–B5 Use stage,Maintenance / repair record,Maintenance impact: Chiller refrigerant recharge,Chiller refrigerant recharge → COP improved 15%,B2–B5,IfcBuildingSystem,Maintenance logs / IoT delta readings
+B2–B5 Use stage,Maintenance / repair record,Maintenance impact: Lighting ballast replacement,Lighting ballast replacement → Stabilized power use,B2–B5,IfcSpace,Maintenance logs / IoT delta readings
+B2–B5 Use stage,Maintenance / repair record,Maintenance impact: Control software upgrade,Control software upgrade → Energy saving mode +5%,B2–B5,IfcSystem,Maintenance logs / IoT delta readings
+B2–B5 Use stage,Maintenance / repair record,Maintenance impact: Heat exchanger cleaning,Heat exchanger cleaning → Improved efficiency 7%,B2–B5,IfcBuildingSystem,Maintenance logs / IoT delta readings
+B2–B5 Use stage,Maintenance / repair record,Maintenance impact: Boiler burner replacement,Boiler burner replacement → Reduced CO₂e 12%,B2–B5,IfcBuildingSystem,Maintenance logs / IoT delta readings

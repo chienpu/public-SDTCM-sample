@@ -1,0 +1,38 @@
+Type,Name,Definition
+Class,sosa:Observation,Act of carrying out an observation.
+Class,sosa:ObservationCollection,Collection of multiple Observations.
+Class,sosa:Actuation,Act of applying a change to a FeatureOfInterest.
+Class,sosa:ActuationCollection,Collection of multiple Actuations.
+Class,sosa:Sampling,Act of making a Sample.
+Class,sosa:SamplingCollection,Collection of multiple Samplings.
+Class,sosa:FeatureOfInterest,"Entity whose property is observed, acted on, or sampled."
+Class,sosa:ObservableProperty,Property of a FeatureOfInterest that can be observed.
+Class,sosa:ActuatableProperty,Property of a FeatureOfInterest that can be acted upon.
+Class,sosa:Result,"Result of an Observation, Actuation, or Sampling."
+Class,sosa:Procedure,"Method, algorithm, or workflow for an Observation, Actuation, or Sampling."
+Class,sosa:Platform,"Entity that hosts Sensors, Actuators, or Samplers."
+Class,sosa:System,"System capable of performing Observations, Actuations, or Samplings."
+Class,sosa:Sensor,"Device, agent, or system that performs Observations."
+Class,sosa:Actuator,"Device, agent, or system that performs Actuations."
+Class,sosa:Sampler,"Device, agent, or system that makes Samples."
+Class,sosa:Sample,Subset or extract of a FeatureOfInterest.
+Class,sosa:Deployment,Activity of deploying a System on a Platform.
+Property,sosa:hasFeatureOfInterest,Observation → FeatureOfInterest.
+Property,sosa:observedProperty,Observation → ObservableProperty.
+Property,sosa:madeBySensor,Observation → Sensor.
+Property,sosa:madeByActuator,Actuation → Actuator.
+Property,sosa:madeBySampler,Sampling → Sampler.
+Property,sosa:hasResult,Observation/Actuation/Sampling → Result.
+Property,sosa:isResultOf,Result → Observation/Actuation/Sampling.
+Property,sosa:resultTime,Time when the result became available.
+Property,sosa:phenomenonTime,Time of the observed phenomenon.
+Property,sosa:usedProcedure,Procedure used in an Observation/Actuation/Sampling.
+Property,sosa:implements,Relation between a System and a Procedure.
+Property,sosa:hasUltimateFeatureOfInterest,Links an Observation to the ultimate FeatureOfInterest.
+Property,sosa:hosts,Platform → System.
+Property,sosa:isHostedBy,System → Platform.
+Property,sosa:deployedOnPlatform,Deployment → Platform.
+Property,sosa:inDeployment,System/Platform → Deployment.
+Property,sosa:hasSample,FeatureOfInterest → Sample.
+Property,sosa:isSampleOf,Sample → FeatureOfInterest.
+Property,sosa:hasDeployment,Platform → Deployment.
