@@ -1,6 +1,6 @@
 Code,Parent,Node,Category,Level,Volume,Percentage,Description
-CE,,Total Carbon Emission,Total Carbon Emission,0,,,
-EC,Total Carbon Emission,Embodied Carbon,Embodied Carbon,1,,,
+,,Total Carbon Emission,Total Carbon Emission,0,,,
+,Total Carbon Emission,Embodied Carbon,Embodied Carbon,1,,,
 A,Embodied Carbon,A1-5. Upfront Carbon,Upfront Carbon,2,,,
 A1,A1-5. Upfront Carbon,A1. Raw Material Supply,Product Stage,3,,,Includes raw material extraction and transport to manufacturing.
 A2,A1-5. Upfront Carbon,A2. Transport,Product Stage,3,,,Covers transport of raw materials to manufacturing plant.
@@ -18,15 +18,23 @@ C1,C1-4. End of Life Carbon,C1. Deconstruction Demolition,End of Life Carbon,3,,
 C2,C1-4. End of Life Carbon,C2. Transport From Site,End of Life Carbon,3,,,Covers transport of waste materials from site to processing facilities.
 C3,C1-4. End of Life Carbon,C3. Waste Processing,End of Life Carbon,3,,,Covers sorting and preparation of waste for reuse recycling or energy recovery.
 C4,C1-4. End of Life Carbon,C4. Disposal,End of Life Carbon,3,,,Covers final disposal (e.g. landfill or energy recovery.
-OC1,Total Carbon Emission,Operational Carbon,Operational Carbon,1,,,
+,Total Carbon Emission,Operational Carbon,Operational Carbon,1,,,
 B6,Operational Carbon,B6. Operational Energy Use,Operational Energy Use,2,,,Covers all energy consumed during building operation.
-B6-1,B6. Operational Energy Use,B6-1. Non-renewable Energy,Operational Energy Use,3,,,
-B6-2,B6. Operational Energy Use,B6-2. Renewable Energy,Operational Energy Use,3,,,
+,B6. Operational Energy Use,B6-1. Non-renewable Energy,Operational Energy Use,3,,,
+,B6. Operational Energy Use,B6-2. Renewable Energy,Operational Energy Use,3,,,
 B7,Operational Carbon,B7. Operational Water Use,Operational Water Use,2,,,Covers all water consumption during building operation.
-B7-1,B7. Operational Water Use,B7-1. Water Supply,Operational Water Use,3,,,
-B7-2,B7. Operational Water Use,B7-2. Wastewater Treatment,Operational Water Use,3,,,
-SC,Total Carbon Emission,Supplementary Carbon,Supplementary Carbon,1,,,
+,B7. Operational Water Use,B7-1. Water Supply,Operational Water Use,3,,,
+,B7. Operational Water Use,B7-2. Wastewater Treatment,Operational Water Use,3,,,
+,Total Carbon Emission,Supplementary Carbon,Supplementary Carbon,1,,,
 D,Supplementary Carbon,D. Beyonf the Life Cycle,Beyonf the Life Cycle,2,,,Covers potential benefits from reuse  recycling or energy recovery.
-D1,D. Beyonf the Life Cycle,D1. Reuse,Beyonf the Life Cycle,3,,,
-D2,D. Beyonf the Life Cycle,D2. Recovery,Beyonf the Life Cycle,3,,,
-D3,D. Beyonf the Life Cycle,D3. Recycle,Beyonf the Life Cycle,3,,,
+,D. Beyonf the Life Cycle,D1. Reuse,Beyonf the Life Cycle,3,,,
+,D. Beyonf the Life Cycle,D2. Recovery,Beyonf the Life Cycle,3,,,
+,D. Beyonf the Life Cycle,D3. Recycle,Beyonf the Life Cycle,3,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
