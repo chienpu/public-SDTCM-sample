@@ -44,7 +44,7 @@ n8n Workflow UI → http://localhost:5678 (user: user / pass: your_pwd)
 
 ---
 
-## 📂 Repository Structure  
+## 📂 Repository Structure (High-Level)
 
 ```
 /ontologyschema/       # TH1 – Standards-aligned ontology (TBox, schema exports)
@@ -60,6 +60,9 @@ Additional files:
 - `LICENSE` → Open-source license (MIT/Apache-2.0)  
 - `CONTRIBUTING.md` → Collaboration guidelines  
 - `requirements.txt` → Python dependencies  
+- `repo_structure.md` → Detailed file-level description of each folder  
+
+👉 For detailed file-level contents of each folder (e.g., sample IFC, Cypher scripts, Dockerfiles), see [repo_structure.md](repo_structure.md).  
 
 ---
 
