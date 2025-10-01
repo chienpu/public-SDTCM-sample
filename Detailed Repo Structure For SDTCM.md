@@ -1,4 +1,4 @@
-* Detailed Repo Structure For SDTCM
+# Detailed Repo Structure For SDTCM
 
 ```bash
 .
