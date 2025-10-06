@@ -1,0 +1,9 @@
+Type,Name,Domain,Range,Description
+QualifiedProperty,prov:qualifiedUsage,prov:Activity,prov:Usage,Qualified representation of usage event.
+QualifiedProperty,prov:qualifiedGeneration,prov:Entity,prov:Generation,Qualified representation of generation event.
+QualifiedProperty,prov:qualifiedAssociation,prov:Activity,prov:Association,Qualified association between activity and agent.
+QualifiedProperty,prov:qualifiedAttribution,prov:Entity,prov:Attribution,Qualified attribution of an entity to an agent.
+QualifiedProperty,prov:qualifiedCommunication,prov:Activity,prov:Communication,Qualified communication between activities.
+QualifiedProperty,prov:qualifiedDelegation,prov:Agent,prov:Delegation,Qualified delegation between agents.
+QualifiedProperty,prov:qualifiedDerivation,prov:Entity,prov:Derivation,Qualified derivation between entities.
+QualifiedProperty,prov:qualifiedInfluence,prov:Entity,prov:Influence,Generic qualified influence relation.

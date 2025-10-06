@@ -1,0 +1,8 @@
+prov:qualifiedUsage a owl:ObjectProperty ; rdfs:domain prov:Activity ; rdfs:range prov:Usage ; rdfs:comment "Qualified representation of usage event." .
+prov:qualifiedGeneration a owl:ObjectProperty ; rdfs:domain prov:Entity ; rdfs:range prov:Generation ; rdfs:comment "Qualified representation of generation event." .
+prov:qualifiedAssociation a owl:ObjectProperty ; rdfs:domain prov:Activity ; rdfs:range prov:Association ; rdfs:comment "Qualified association between activity and agent." .
+prov:qualifiedAttribution a owl:ObjectProperty ; rdfs:domain prov:Entity ; rdfs:range prov:Attribution ; rdfs:comment "Qualified attribution of an entity to an agent." .
+prov:qualifiedCommunication a owl:ObjectProperty ; rdfs:domain prov:Activity ; rdfs:range prov:Communication ; rdfs:comment "Qualified communication between activities." .
+prov:qualifiedDelegation a owl:ObjectProperty ; rdfs:domain prov:Agent ; rdfs:range prov:Delegation ; rdfs:comment "Qualified delegation between agents." .
+prov:qualifiedDerivation a owl:ObjectProperty ; rdfs:domain prov:Entity ; rdfs:range prov:Derivation ; rdfs:comment "Qualified derivation between entities." .
+prov:qualifiedInfluence a owl:ObjectProperty ; rdfs:domain prov:Entity ; rdfs:range prov:Influence ; rdfs:comment "Generic qualified influence relation." .
