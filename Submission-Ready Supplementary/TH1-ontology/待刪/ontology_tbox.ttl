@@ -1,0 +1,100 @@
+@prefix : <http://builtinsight.io/ontology/stride#> .
+@prefix bs: <http://builtinsight.io/ontology/bsen15978#> .
+@prefix ifc: <http://ifcowl.openbimstandards.org/IFC4x3#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+#################################################################
+# === Core Classes ===
+#################################################################
+
+:LifecycleModule      a owl:Class ;
+    rdfs:label "Lifecycle Module (BS EN 15978)" ;
+    rdfs:comment "Represents modular stages A1–D in lifecycle carbon accounting." .
+
+:BuildingComponent    a owl:Class ;
+    rdfs:subClassOf ifc:IfcBuildingElement ;
+    rdfs:label "Building Component" ;
+    rdfs:comment "Physical element defined in IFC and linked to lifecycle modules." .
+
+:Asset                a owl:Class ;
+    rdfs:subClassOf ifc:IfcAsset ;
+    rdfs:label "Asset" ;
+    rdfs:comment "Maintainable asset or equipment within facility scope." .
+
+sosa:Sensor           a owl:Class ;
+    rdfs:label "Sensor" .
+
+sosa:Observation      a owl:Class ;
+    rdfs:label "Observation" .
+
+:CarbonItem           a owl:Class ;
+    rdfs:label "Carbon Item" ;
+    rdfs:comment "A quantifiable emission record linked to lifecycle stage and physical entity." .
+
+prov:Activity         a owl:Class .
+prov:Agent            a owl:Class .
+
+#################################################################
+# === Object Properties ===
+#################################################################
+
+:monitors  a owl:ObjectProperty ;
+    rdfs:domain sosa:Sensor ;
+    rdfs:range  :Asset ;
+    rdfs:label  "monitors" ;
+    rdfs:comment "Links a sensor to the asset it monitors." .
+
+:observes  a owl:ObjectProperty ;
+    rdfs:domain sosa:Observation ;
+    rdfs:range  :LifecycleModule ;
+    rdfs:label  "observes" ;
+    rdfs:comment "Connects an observation event to the relevant lifecycle module (A1–D)." .
+
+:anchors   a owl:ObjectProperty ;
+    rdfs:domain :CarbonItem ;
+    rdfs:range  ifc:IfcRoot ;
+    rdfs:label  "anchors" ;
+    rdfs:comment "Anchors a carbon record to an IFC entity via IfcGloballyUniqueId." .
+
+:alignedWith a owl:ObjectProperty ;
+    rdfs:domain :LifecycleModule ;
+    rdfs:range  :BuildingComponent ;
+    rdfs:label  "alignedWith" ;
+    rdfs:comment "Semantic alignment between BS EN 15978 modules and IFC components." .
+
+:hasObservation a owl:ObjectProperty ;
+    rdfs:domain :Asset ;
+    rdfs:range  sosa:Observation ;
+    rdfs:label  "hasObservation" .
+
+#################################################################
+# === Provenance Links (PROV-O Alignment) ===
+#################################################################
+
+prov:used              a owl:ObjectProperty .
+prov:wasGeneratedBy    a owl:ObjectProperty .
+prov:wasAttributedTo   a owl:ObjectProperty .
+
+#################################################################
+# === Example Individuals for Validation ===
+#################################################################
+
+bs:A1  a :LifecycleModule ; rdfs:label "A1. Raw Material Supply" .
+bs:A2  a :LifecycleModule ; rdfs:label "A2. Transport" .
+bs:A3  a :LifecycleModule ; rdfs:label "A3. Manufacturing" .
+bs:B6  a :LifecycleModule ; rdfs:label "B6. Operational Energy Use" .
+bs:C3  a :LifecycleModule ; rdfs:label "C3. Waste Processing" .
+bs:D   a :LifecycleModule ; rdfs:label "D. Beyond the Life Cycle" .
+
+:AHU12  a :Asset ; rdfs:label "Air Handling Unit 12" ; ifc:globalId "2FJ9Jp6Tz1QyR4sE1X5N7Y" .
+:AHU12_T1 a sosa:Sensor ; rdfs:label "AHU12 Temperature Sensor" .
+:Obs001  a sosa:Observation ; sosa:resultTime "2025-09-30T10:00:00Z"^^xsd:dateTime .
+
+:AHU12_T1 :monitors :AHU12 .
+:Obs001 :observes bs:B6 .
+:Obs001 prov:wasGeneratedBy :AHU12_T1 .
+bs:B6 :alignedWith :AHU12 .

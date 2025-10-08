@@ -1,0 +1,160 @@
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix ifc:  <http://ifcowl.openbimstandards.org/IFC4x3#> .
+@prefix sdt:  <http://builtinsight.io/ontology/sdt#> .
+
+#########################################################################################################
+# SHACL Shapes for SDT v4 (Academic Complete)
+# Usable in Protégé SHACL tab, pySHACL, or Neo4j n10s SHACL validation procedures.
+#########################################################################################################
+
+# ---- Core: CarbonResult must be aligned with a LifecycleModule and have value/unit/provenance
+sdt:CarbonResultShape a sh:NodeShape ;
+  sh:targetClass sdt:CarbonResult ;
+  sh:property [
+    sh:path sdt:alignedWith ;
+    sh:class sdt:LifecycleModule ;
+    sh:minCount 1 ;
+    sh:message "CarbonResult must align with a LifecycleModule." ;
+  ] ;
+  sh:property [
+    sh:path prov:wasGeneratedBy ;
+    sh:class prov:Activity ;
+    sh:minCount 1 ;
+    sh:message "CarbonResult must record the generating Activity (prov:wasGeneratedBy)." ;
+  ] ;
+  sh:property [
+    sh:path sdt:value ;
+    sh:datatype xsd:decimal ;
+    sh:minCount 1 ;
+    sh:message "CarbonResult must have a numeric value (xsd:decimal)." ;
+  ] ;
+  sh:property [
+    sh:path sdt:unit ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ;
+    sh:message "CarbonResult must have a unit (xsd:string)." ;
+  ] ;
+  sh:property [
+    sh:path sdt:confidenceScore ;
+    sh:datatype xsd:float ;
+    sh:minInclusive 0.0 ;
+    sh:maxInclusive 1.0 ;
+    sh:message "confidenceScore must be between 0 and 1." ;
+  ] .
+
+# ---- Embodied results must align with A1–A5
+sdt:EmbodiedResultShape a sh:NodeShape ;
+  sh:targetClass sdt:EmbodiedCarbonResult ;
+  sh:property [
+    sh:path sdt:alignedWith ;
+    sh:in ( sdt:A1 sdt:A2 sdt:A3 sdt:A4 sdt:A5 ) ;
+    sh:minCount 1 ;
+    sh:message "EmbodiedCarbonResult.alignedWith must be one of A1–A5." ;
+  ] .
+
+# ---- Operational results must align with B6 or B7
+sdt:OperationalResultShape a sh:NodeShape ;
+  sh:targetClass sdt:OperationalCarbonResult ;
+  sh:property [
+    sh:path sdt:alignedWith ;
+    sh:in ( sdt:B6 sdt:B7 ) ;
+    sh:minCount 1 ;
+    sh:message "OperationalCarbonResult.alignedWith must be B6 or B7." ;
+  ] .
+
+# ---- EmbodiedActivity uses ActivityQuantity and EmissionFactor
+sdt:EmbodiedActivityShape a sh:NodeShape ;
+  sh:targetClass sdt:EmbodiedActivity ;
+  sh:property [
+    sh:path prov:used ;
+    sh:minCount 1 ;
+    sh:qualifiedValueShape [ sh:class sdt:ActivityQuantity ] ;
+    sh:qualifiedMinCount 1 ;
+    sh:message "EmbodiedActivity must use at least one ActivityQuantity." ;
+  ] ;
+  sh:property [
+    sh:path prov:used ;
+    sh:minCount 1 ;
+    sh:qualifiedValueShape [ sh:class sdt:EmissionFactor ] ;
+    sh:qualifiedMinCount 1 ;
+    sh:message "EmbodiedActivity must use at least one EmissionFactor." ;
+  ] .
+
+# ---- OperationalActivity uses Observation and EmissionFactor
+sdt:OperationalActivityShape a sh:NodeShape ;
+  sh:targetClass sdt:OperationalActivity ;
+  sh:property [
+    sh:path prov:used ;
+    sh:minCount 1 ;
+    sh:qualifiedValueShape [ sh:class sosa:Observation ] ;
+    sh:qualifiedMinCount 1 ;
+    sh:message "OperationalActivity must use at least one sosa:Observation." ;
+  ] ;
+  sh:property [
+    sh:path prov:used ;
+    sh:minCount 1 ;
+    sh:qualifiedValueShape [ sh:class sdt:EmissionFactor ] ;
+    sh:qualifiedMinCount 1 ;
+    sh:message "OperationalActivity must use at least one EmissionFactor." ;
+  ] .
+
+# ---- IfcBuildingElement should have material linkage
+sdt:IfcBuildingElementMaterialShape a sh:NodeShape ;
+  sh:targetClass ifc:IfcBuildingElement ;
+  sh:property [
+    sh:path sdt:hasMaterial ;
+    sh:minCount 0 ;
+  ] ;
+  sh:property [
+    sh:path sdt:hasIFCMaterial ;
+    sh:minCount 0 ;
+  ] ;
+  sh:or (
+    [ sh:property [ sh:path sdt:hasMaterial ; sh:minCount 1 ] ]
+    [ sh:property [ sh:path sdt:hasIFCMaterial ; sh:minCount 1 ] ]
+  ) ;
+  sh:message "IfcBuildingElement should have either sdt:hasMaterial or sdt:hasIFCMaterial." .
+
+# ---- Asset must connect to meter and observation (B6)
+sdt:AssetB6Shape a sh:NodeShape ;
+  sh:targetClass ifc:IfcAsset ;
+  sh:property [
+    sh:path sdt:hasElectricityConsumption ;
+    sh:class sdt:ElectricityMeter ;
+    sh:minCount 1 ;
+    sh:message "IfcAsset must have an ElectricityMeter (sdt:hasElectricityConsumption)." ;
+  ] .
+
+sdt:ElectricityMeterShape a sh:NodeShape ;
+  sh:targetClass sdt:ElectricityMeter ;
+  sh:property [
+    sh:path sosa:madeObservation ;
+    sh:class sosa:Observation ;
+    sh:minCount 1 ;
+    sh:message "ElectricityMeter must have at least one sosa:Observation." ;
+  ] .
+
+# ---- Observation should have FOI
+sdt:ObservationFOIShape a sh:NodeShape ;
+  sh:targetClass sosa:Observation ;
+  sh:property [
+    sh:path sosa:hasFeatureOfInterest ;
+    sh:class sosa:FeatureOfInterest ;
+    sh:minCount 1 ;
+    sh:message "Observation must have a FeatureOfInterest." ;
+  ] .
+
+# ---- LifecycleModule aggregates CarbonResults (optional roll-up)
+sdt:LifecycleAggregatesShape a sh:NodeShape ;
+  sh:targetClass sdt:LifecycleModule ;
+  sh:property [
+    sh:path sdt:aggregates ;
+    sh:class sdt:CarbonResult ;
+    sh:minCount 0 ;
+    sh:message "LifecycleModule may aggregate CarbonResults." ;
+  ] .

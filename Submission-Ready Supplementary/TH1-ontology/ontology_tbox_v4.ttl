@@ -1,0 +1,305 @@
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix ifc:  <http://ifcowl.openbimstandards.org/IFC4x3#> .
+@prefix sdt:  <http://builtinsight.io/ontology/sdt#> .
+
+#########################################################################################################
+# SDT Lifecycle Carbon Ontology — v4 (Academic Complete, TH1–TH6)  — Option A: Hierarchical IFC Core
+# English-only comments. Neo4j n10s + Protégé compatible.
+#########################################################################################################
+
+############################
+# SECTION 1 — CORE CLASSES #
+############################
+
+### Lifecycle Modules (BS EN 15978) as Classes
+sdt:LifecycleModule a owl:Class ;
+  rdfs:label "Lifecycle Module (BS EN 15978)" ;
+  rdfs:comment "Abstract class for lifecycle modules (A1–A5, B1–B7, C1–C4, D)." .
+
+# A1–A5 (Embodied)
+sdt:A1 a owl:Class ; rdfs:subClassOf sdt:LifecycleModule ; rdfs:label "A1 Raw Material Supply" .
+sdt:A2 a owl:Class ; rdfs:subClassOf sdt:LifecycleModule ; rdfs:label "A2 Transport" .
+sdt:A3 a owl:Class ; rdfs:subClassOf sdt:LifecycleModule ; rdfs:label "A3 Manufacturing" .
+sdt:A4 a owl:Class ; rdfs:subClassOf sdt:LifecycleModule ; rdfs:label "A4 Transport (Construction)" .
+sdt:A5 a owl:Class ; rdfs:subClassOf sdt:LifecycleModule ; rdfs:label "A5 Construction/Installation" .
+
+# B1–B7 (Use)
+sdt:B1 a owl:Class ; rdfs:subClassOf sdt:LifecycleModule ; rdfs:label "B1 Use" .
+sdt:B2 a owl:Class ; rdfs:subClassOf sdt:LifecycleModule ; rdfs:label "B2 Maintenance" .
+sdt:B3 a owl:Class ; rdfs:subClassOf sdt:LifecycleModule ; rdfs:label "B3 Repair" .
+sdt:B4 a owl:Class ; rdfs:subClassOf sdt:LifecycleModule ; rdfs:label "B4 Replacement" .
+sdt:B5 a owl:Class ; rdfs:subClassOf sdt:LifecycleModule ; rdfs:label "B5 Refurbishment" .
+sdt:B6 a owl:Class ; rdfs:subClassOf sdt:LifecycleModule ; rdfs:label "B6 Operational Energy Use" .
+sdt:B7 a owl:Class ; rdfs:subClassOf sdt:LifecycleModule ; rdfs:label "B7 Operational Water Use" .
+
+# C1–C4 (End-of-life) and D
+sdt:C1 a owl:Class ; rdfs:subClassOf sdt:LifecycleModule ; rdfs:label "C1 De-construction/Demolition" .
+sdt:C2 a owl:Class ; rdfs:subClassOf sdt:LifecycleModule ; rdfs:label "C2 Transport (End of Life)" .
+sdt:C3 a owl:Class ; rdfs:subClassOf sdt:LifecycleModule ; rdfs:label "C3 Waste Processing" .
+sdt:C4 a owl:Class ; rdfs:subClassOf sdt:LifecycleModule ; rdfs:label "C4 Disposal" .
+sdt:D  a owl:Class ; rdfs:subClassOf sdt:LifecycleModule ; rdfs:label "D Beyond the Life Cycle" .
+
+### Named Individuals (optional helpers for rules/aggregations)
+sdt:A1_i a sdt:LifecycleModule , owl:NamedIndividual ; rdfs:label "A1 (individual)" .
+sdt:A2_i a sdt:LifecycleModule , owl:NamedIndividual ; rdfs:label "A2 (individual)" .
+sdt:A3_i a sdt:LifecycleModule , owl:NamedIndividual ; rdfs:label "A3 (individual)" .
+sdt:A4_i a sdt:LifecycleModule , owl:NamedIndividual ; rdfs:label "A4 (individual)" .
+sdt:A5_i a sdt:LifecycleModule , owl:NamedIndividual ; rdfs:label "A5 (individual)" .
+sdt:B6_i a sdt:LifecycleModule , owl:NamedIndividual ; rdfs:label "B6 (individual)" .
+sdt:B7_i a sdt:LifecycleModule , owl:NamedIndividual ; rdfs:label "B7 (individual)" .
+sdt:C1_i a sdt:LifecycleModule , owl:NamedIndividual ; rdfs:label "C1 (individual)" .
+sdt:C2_i a sdt:LifecycleModule , owl:NamedIndividual ; rdfs:label "C2 (individual)" .
+sdt:C3_i a sdt:LifecycleModule , owl:NamedIndividual ; rdfs:label "C3 (individual)" .
+sdt:C4_i a sdt:LifecycleModule , owl:NamedIndividual ; rdfs:label "C4 (individual)" .
+sdt:D_i  a sdt:LifecycleModule , owl:NamedIndividual ; rdfs:label "D (individual)" .
+
+### Carbon Results
+sdt:CarbonResult a owl:Class ;
+  rdfs:label "Carbon Result" ;
+  rdfs:comment "Computed carbon result (kgCO2e). Align with lifecycle module and preserve provenance." .
+
+sdt:EmbodiedCarbonResult a owl:Class ;
+  rdfs:subClassOf sdt:CarbonResult ;
+  rdfs:label "Embodied Carbon Result" ;
+  rdfs:comment "Result for A1–A5; derived from material quantities and emission factors." .
+
+sdt:OperationalCarbonResult a owl:Class ;
+  rdfs:subClassOf sdt:CarbonResult ;
+  rdfs:label "Operational Carbon Result" ;
+  rdfs:comment "Result for B6–B7; derived from observations × emission factor." .
+
+### Activities (PROV)
+sdt:EmbodiedActivity a owl:Class ; rdfs:subClassOf prov:Activity ; rdfs:label "Embodied Activity" .
+sdt:OperationalActivity a owl:Class ; rdfs:subClassOf prov:Activity ; rdfs:label "Operational Activity" .
+
+### Materials & Quantities
+sdt:Material a owl:Class ; rdfs:label "Material" ; rdfs:comment "Material referenced by IFC element; may link to EPD." .
+ifc:IfcMaterial a owl:Class ; rdfs:label "IFC Material" .
+sdt:EmissionFactor a owl:Class ; rdfs:label "Emission Factor" ; rdfs:comment "Factor converting quantity/observation to CO2e." .
+sdt:ActivityQuantity a owl:Class ; rdfs:label "Activity Quantity" ; rdfs:comment "Quantity term (m3, kg, kWh...)." .
+
+### Observation (SOSA)
+sosa:Observation a owl:Class ; rdfs:label "Observation" .
+sosa:ObservationCollection a owl:Class ; rdfs:label "Observation Collection" .
+sosa:Sensor a owl:Class ; rdfs:label "Sensor" .
+sosa:FeatureOfInterest a owl:Class ; rdfs:label "Feature Of Interest" .
+sdt:ElectricityMeter a owl:Class ; rdfs:subClassOf sosa:Sensor ; rdfs:label "Electricity Meter" .
+sdt:WaterMeter a owl:Class ; rdfs:subClassOf sosa:Sensor ; rdfs:label "Water Meter" .
+
+### IFC Core — Hierarchical Backbone (Option A)
+ifc:IfcRoot a owl:Class ; rdfs:label "IFC Root" .
+ifc:IfcObjectDefinition a owl:Class ; rdfs:subClassOf ifc:IfcRoot ; rdfs:label "IFC Object Definition" .
+ifc:IfcObject a owl:Class ; rdfs:subClassOf ifc:IfcObjectDefinition ; rdfs:label "IFC Object" .
+ifc:IfcProduct a owl:Class ; rdfs:subClassOf ifc:IfcObject ; rdfs:label "IFC Product" .
+ifc:IfcSpatialStructureElement a owl:Class ; rdfs:subClassOf ifc:IfcProduct ; rdfs:label "IFC Spatial Structure Element" .
+ifc:IfcSite a owl:Class ; rdfs:subClassOf ifc:IfcSpatialStructureElement ; rdfs:label "IFC Site" .
+ifc:IfcBuilding a owl:Class ; rdfs:subClassOf ifc:IfcSpatialStructureElement ; rdfs:label "IFC Building" .
+ifc:IfcBuildingStorey a owl:Class ; rdfs:subClassOf ifc:IfcSpatialStructureElement ; rdfs:label "IFC Building Storey" .
+ifc:IfcSpace a owl:Class ; rdfs:subClassOf ifc:IfcSpatialStructureElement ; rdfs:label "IFC Space" .
+ifc:IfcElement a owl:Class ; rdfs:subClassOf ifc:IfcProduct ; rdfs:label "IFC Element" .
+ifc:IfcBuildingElement a owl:Class ; rdfs:subClassOf ifc:IfcElement ; rdfs:label "IFC Building Element" .
+ifc:IfcAsset a owl:Class ; rdfs:subClassOf ifc:IfcObject ; rdfs:label "IFC Asset (Building/Campus)" .
+ifc:IfcProject a owl:Class ; rdfs:subClassOf ifc:IfcObjectDefinition ; rdfs:label "IFC Project" .
+
+### Agents (PROV)
+prov:Agent a owl:Class ; rdfs:label "Agent" .
+prov:Activity a owl:Class ; rdfs:label "Activity" .
+
+#####################################
+# SECTION 2 — OBJECT PROPERTIES     #
+#####################################
+
+# Alignment & aggregation
+sdt:alignedWith a owl:ObjectProperty ;
+  rdfs:label "alignedWith" ;
+  rdfs:domain sdt:CarbonResult ;
+  rdfs:range  sdt:LifecycleModule ;
+  rdfs:comment "Aligns a CarbonResult with its BS EN 15978 lifecycle module." .
+
+sdt:aggregates a owl:ObjectProperty ;
+  rdfs:label "aggregates" ;
+  rdfs:domain sdt:LifecycleModule ;
+  rdfs:range  sdt:CarbonResult ;
+  rdfs:comment "Lifecycle module aggregates multiple CarbonResult values." .
+
+sdt:contributesTo a owl:ObjectProperty ;
+  rdfs:label "contributesTo" ;
+  rdfs:domain ifc:IfcAsset ;
+  rdfs:range  ifc:IfcAsset ;
+  rdfs:comment "Contribution chain (e.g., Building contributesTo Campus footprint)." .
+
+# Calculation chain & provenance
+sdt:calculatedFrom a owl:ObjectProperty ;
+  rdfs:label "calculatedFrom" ;
+  rdfs:domain sdt:CarbonResult ;
+  rdfs:range  rdfs:Resource ;
+  rdfs:comment "Inputs used in the calculation (quantity, observation, factor, material...)." .
+
+sdt:derivedFrom a owl:ObjectProperty ;
+  rdfs:label "derivedFrom" ;
+  rdfs:domain rdfs:Resource ;
+  rdfs:range  rdfs:Resource ;
+  rdfs:comment "Generic lineage between resources (ETL traceability)." .
+
+sdt:relatedTo a owl:ObjectProperty ;
+  rdfs:label "relatedTo" ;
+  rdfs:domain rdfs:Resource ;
+  rdfs:range  rdfs:Resource ;
+  rdfs:comment "Lightweight cross-reference relation for integration checkpoints." .
+
+prov:wasGeneratedBy a owl:ObjectProperty ;
+  rdfs:label "wasGeneratedBy" ;
+  rdfs:domain sdt:CarbonResult ;
+  rdfs:range  prov:Activity ;
+  rdfs:comment "Result was generated by an activity (Embodied/Operational)." .
+
+prov:wasAttributedTo a owl:ObjectProperty ;
+  rdfs:label "wasAttributedTo" ;
+  rdfs:domain rdfs:Resource ;
+  rdfs:range  prov:Agent ;
+  rdfs:comment "Attribution to an agent (system/person)." .
+
+prov:used a owl:ObjectProperty ;
+  rdfs:label "used" ;
+  rdfs:domain prov:Activity ;
+  rdfs:range  rdfs:Resource ;
+  rdfs:comment "Activity used a resource (Observation, EmissionFactor, Material, IFC quantity, etc.)." .
+
+prov:wasAssociatedWith a owl:ObjectProperty ;
+  rdfs:label "wasAssociatedWith" ;
+  rdfs:domain prov:Activity ;
+  rdfs:range  prov:Agent ;
+  rdfs:comment "Associates an activity with the responsible agent." .
+
+prov:actedOnBehalfOf a owl:ObjectProperty ;
+  rdfs:label "actedOnBehalfOf" ;
+  rdfs:domain prov:Agent ;
+  rdfs:range  prov:Agent ;
+  rdfs:comment "Delegation between agents (optional for audit trails)." .
+
+# IFC spatial/product relations (Option A helpers)
+sdt:belongsToProject a owl:ObjectProperty ;
+  rdfs:label "belongsToProject" ;
+  rdfs:domain ifc:IfcObjectDefinition ;
+  rdfs:range  ifc:IfcProject ;
+  rdfs:comment "Associates an IFC object to its IfcProject." .
+
+sdt:locatedIn a owl:ObjectProperty ;
+  rdfs:label "locatedIn" ;
+  rdfs:domain ifc:IfcProduct ;
+  rdfs:range  ifc:IfcSpatialStructureElement ;
+  rdfs:comment "Product located in a spatial element (Building, Storey, Space, Site)." .
+
+sdt:monitoredBy a owl:ObjectProperty ;
+  rdfs:label "monitoredBy" ;
+  rdfs:domain ifc:IfcAsset ;
+  rdfs:range  sosa:Sensor ;
+  rdfs:comment "Asset monitored by a sensor (electricity/water meters, etc.)." .
+
+# Embodied chain
+sdt:hasMaterial a owl:ObjectProperty ;
+  rdfs:label "hasMaterial" ;
+  rdfs:domain ifc:IfcBuildingElement ;
+  rdfs:range  sdt:Material ;
+  rdfs:comment "Building element uses a material." .
+
+sdt:hasIFCMaterial a owl:ObjectProperty ;
+  rdfs:label "hasIFCMaterial" ;
+  rdfs:domain ifc:IfcBuildingElement ;
+  rdfs:range  ifc:IfcMaterial ;
+  rdfs:comment "Explicit link to IFC material entity." .
+
+sdt:hasEmissionFactor a owl:ObjectProperty ;
+  rdfs:label "hasEmissionFactor" ;
+  rdfs:domain sdt:ActivityQuantity ;
+  rdfs:range  sdt:EmissionFactor ;
+  rdfs:comment "Quantity associated with an emission factor." .
+
+# Operational chain
+sdt:hasElectricityConsumption a owl:ObjectProperty ;
+  rdfs:label "hasElectricityConsumption" ;
+  rdfs:domain ifc:IfcAsset ;
+  rdfs:range  sdt:ElectricityMeter ;
+  rdfs:comment "Asset has electricity meter (B6 observations)." .
+
+sdt:hasWaterConsumption a owl:ObjectProperty ;
+  rdfs:label "hasWaterConsumption" ;
+  rdfs:domain ifc:IfcAsset ;
+  rdfs:range  sdt:WaterMeter ;
+  rdfs:comment "Asset has water meter (B7 observations)." .
+
+sosa:madeObservation a owl:ObjectProperty ;
+  rdfs:label "madeObservation" ;
+  rdfs:domain sosa:Sensor ;
+  rdfs:range  sosa:Observation ;
+  rdfs:comment "Sensor made an observation." .
+
+sosa:hasMember a owl:ObjectProperty ;
+  rdfs:label "hasMember" ;
+  rdfs:domain sosa:ObservationCollection ;
+  rdfs:range  sosa:Observation ;
+  rdfs:comment "Observation collection membership." .
+
+sosa:hasFeatureOfInterest a owl:ObjectProperty ;
+  rdfs:label "hasFeatureOfInterest" ;
+  rdfs:domain sosa:Observation ;
+  rdfs:range  sosa:FeatureOfInterest ;
+  rdfs:comment "Feature of interest of an observation." .
+
+sdt:hasObservation a owl:ObjectProperty ;
+  rdfs:label "hasObservation" ;
+  rdfs:domain ifc:IfcAsset ;
+  rdfs:range  sosa:Observation ;
+  rdfs:comment "Convenience link from an asset to its observations." .
+
+#####################################
+# SECTION 3 — DATATYPE PROPERTIES   #
+#####################################
+
+sdt:value a owl:DatatypeProperty ;
+  rdfs:label "value" ;
+  rdfs:domain sdt:CarbonResult ;
+  rdfs:range  xsd:decimal ;
+  rdfs:comment "Numeric GWP value (kgCO2e)." .
+
+sdt:unit a owl:DatatypeProperty ;
+  rdfs:label "unit" ;
+  rdfs:domain rdfs:Resource ;
+  rdfs:range  xsd:string ;
+  rdfs:comment "Unit string (kgCO2e, kWh, m3)." .
+
+sdt:uncertainty a owl:DatatypeProperty ;
+  rdfs:label "uncertainty" ;
+  rdfs:domain sdt:CarbonResult ;
+  rdfs:range  xsd:float ;
+  rdfs:comment "Optional uncertainty for the result." .
+
+sdt:confidenceScore a owl:DatatypeProperty ;
+  rdfs:label "confidenceScore" ;
+  rdfs:domain sdt:CarbonResult ;
+  rdfs:range  xsd:float ;
+  rdfs:comment "Optional confidence score (0–1)." .
+
+sdt:timestamp a owl:DatatypeProperty ;
+  rdfs:label "timestamp" ;
+  rdfs:domain rdfs:Resource ;
+  rdfs:range  xsd:dateTime ;
+  rdfs:comment "Timestamp for results, observations, or activities." .
+
+sdt:source a owl:DatatypeProperty ;
+  rdfs:label "source" ;
+  rdfs:domain rdfs:Resource ;
+  rdfs:range  xsd:string ;
+  rdfs:comment "Data source or reference (EPD id, grid dataset name, etc.)." .
+
+# IFC GUID helper
+sdt:ifcGUID a owl:DatatypeProperty ;
+  rdfs:label "ifcGUID" ;
+  rdfs:domain ifc:IfcRoot ;
+  rdfs:range  xsd:string ;
+  rdfs:comment "String GUID anchor for IFC entities." .

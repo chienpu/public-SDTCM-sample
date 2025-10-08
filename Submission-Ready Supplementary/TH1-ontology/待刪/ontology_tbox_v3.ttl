@@ -1,0 +1,58 @@
+
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix ifc:  <http://ifcowl.openbimstandards.org/IFC4x3#> .
+@prefix bs:   <http://builtinsight.io/ontology/stride#> .
+
+#########################################################################################################
+# Semantic Digital Thread (SDT) — Lifecycle Carbon Ontology (TBox v3, Developer-Friendly, English only)
+#########################################################################################################
+
+bs:LifecycleModule a owl:Class ; rdfs:label "Lifecycle Module (BS EN 15978)" .
+bs:A1 a owl:Class ; rdfs:subClassOf bs:LifecycleModule ; rdfs:label "A1 Raw Material Supply" .
+bs:A2 a owl:Class ; rdfs:subClassOf bs:LifecycleModule ; rdfs:label "A2 Transport" .
+bs:A3 a owl:Class ; rdfs:subClassOf bs:LifecycleModule ; rdfs:label "A3 Manufacturing" .
+bs:A4 a owl:Class ; rdfs:subClassOf bs:LifecycleModule ; rdfs:label "A4 Transport (Construction)" .
+bs:A5 a owl:Class ; rdfs:subClassOf bs:LifecycleModule ; rdfs:label "A5 Construction/Installation" .
+bs:B6 a owl:Class ; rdfs:subClassOf bs:LifecycleModule ; rdfs:label "B6 Operational Energy Use" .
+bs:B7 a owl:Class ; rdfs:subClassOf bs:LifecycleModule ; rdfs:label "B7 Operational Water Use" .
+bs:D a owl:Class ; rdfs:subClassOf bs:LifecycleModule ; rdfs:label "D Beyond the Life Cycle" .
+
+bs:CarbonResult a owl:Class ; rdfs:label "Carbon Result" .
+bs:EmbodiedCarbonResult a owl:Class ; rdfs:subClassOf bs:CarbonResult ; rdfs:label "Embodied Carbon Result" .
+bs:OperationalCarbonResult a owl:Class ; rdfs:subClassOf bs:CarbonResult ; rdfs:label "Operational Carbon Result" .
+
+bs:Material a owl:Class ; rdfs:label "Material" .
+bs:EmissionFactor a owl:Class ; rdfs:label "Emission Factor" .
+bs:ActivityQuantity a owl:Class ; rdfs:label "Activity Quantity" .
+sosa:Observation a owl:Class ; rdfs:label "Observation" .
+sosa:Sensor a owl:Class ; rdfs:label "Sensor" .
+ifc:IfcBuildingElement a owl:Class ; rdfs:label "IFC Building Element" .
+ifc:IfcAsset a owl:Class ; rdfs:label "IFC Asset" .
+prov:Activity a owl:Class ; rdfs:label "Activity" .
+prov:Agent a owl:Class ; rdfs:label "Agent" .
+
+bs:alignedWith a owl:ObjectProperty ; rdfs:domain bs:CarbonResult ; rdfs:range bs:LifecycleModule .
+bs:aggregates a owl:ObjectProperty ; rdfs:domain bs:LifecycleModule ; rdfs:range bs:CarbonResult .
+bs:contributesTo a owl:ObjectProperty ; rdfs:domain ifc:IfcAsset ; rdfs:range ifc:IfcAsset .
+prov:wasGeneratedBy a owl:ObjectProperty ; rdfs:domain bs:CarbonResult ; rdfs:range prov:Activity .
+prov:wasAttributedTo a owl:ObjectProperty ; rdfs:domain bs:CarbonResult ; rdfs:range prov:Agent .
+prov:used a owl:ObjectProperty ; rdfs:domain prov:Activity ; rdfs:range rdfs:Resource .
+bs:calculatedFrom a owl:ObjectProperty ; rdfs:domain bs:CarbonResult ; rdfs:range rdfs:Resource .
+prov:wasDerivedFrom a owl:ObjectProperty ; rdfs:domain bs:ActivityQuantity ; rdfs:range rdfs:Resource .
+bs:hasMaterial a owl:ObjectProperty ; rdfs:domain ifc:IfcBuildingElement ; rdfs:range bs:Material .
+bs:hasEmissionFactor a owl:ObjectProperty ; rdfs:domain bs:ActivityQuantity ; rdfs:range bs:EmissionFactor .
+bs:hasElectricityConsumption a owl:ObjectProperty ; rdfs:domain ifc:IfcAsset ; rdfs:range sosa:Sensor .
+sosa:madeObservation a owl:ObjectProperty ; rdfs:domain sosa:Sensor ; rdfs:range sosa:Observation .
+bs:hasObservation a owl:ObjectProperty ; rdfs:domain ifc:IfcAsset ; rdfs:range sosa:Observation .
+
+bs:value a owl:DatatypeProperty ; rdfs:domain bs:CarbonResult ; rdfs:range xsd:decimal .
+bs:unit a owl:DatatypeProperty ; rdfs:domain rdfs:Resource ; rdfs:range xsd:string .
+bs:uncertainty a owl:DatatypeProperty ; rdfs:domain bs:CarbonResult ; rdfs:range xsd:float .
+bs:confidenceScore a owl:DatatypeProperty ; rdfs:domain bs:CarbonResult ; rdfs:range xsd:float .
+bs:timestamp a owl:DatatypeProperty ; rdfs:domain rdfs:Resource ; rdfs:range xsd:dateTime .
+bs:source a owl:DatatypeProperty ; rdfs:domain rdfs:Resource ; rdfs:range xsd:string .
