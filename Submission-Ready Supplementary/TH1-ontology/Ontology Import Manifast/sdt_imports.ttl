@@ -1,0 +1,24 @@
+#################################################################
+# SDT Ontology Import Manifest
+# File: sdt_imports.ttl
+# Purpose: Declare all external dependencies for the SDT ontology
+#################################################################
+
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sdt:  <http://builtinsight.io/ontology/sdt#> .
+
+<http://builtinsight.io/ontology/sdt>
+    a owl:Ontology ;
+    rdfs:label "Semantic Digital Thread (SDT) Ontology Import Manifest" ;
+    owl:imports 
+        <http://www.w3.org/ns/sosa/> ,                 # Sensors / Observations
+        <http://www.w3.org/ns/prov-o-20130430/> ,      # Provenance Ontology
+        <https://github.com/openBIMstandards/ifcOWL/blob/master/IFC4_ADD2.ttl> ,  # BIM Ontology
+        <http://www.w3.org/2006/time#> ,               # OWL-Time Ontology
+        <http://purl.org/vocommons/voaf#> ;            # Vocabulary Metadata
+    rdfs:comment """
+    This manifest defines all imported ontologies required for SDT.
+    Use this as a standalone import entry in Protégé or for automated
+    graph ingestion pipelines (Neo4j n10s, Fuseki, etc.).
+    """ .

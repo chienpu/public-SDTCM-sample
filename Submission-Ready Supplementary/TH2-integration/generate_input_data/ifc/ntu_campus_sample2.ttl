@@ -1,0 +1,80 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sdt: <http://builtinsight.io/ontology/sdt#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://builtinsight.io/ontology/sdt#0n0KDnTij8YBMvsbe5w$1g> a sdt:Asset ;
+    rdfs:label "Classroom_101" ;
+    sdt:ifcGUID "0n0KDnTij8YBMvsbe5w$1g" ;
+    sdt:source "Pset_Area:GrossArea_m2=85.0",
+        "Pset_Area:Volume_m3=230.0" .
+
+sdt:0naD6fy7zFRgA3vPbIDm4j a sdt:Asset ;
+    rdfs:label "Floor_A" ;
+    sdt:ifcGUID "0naD6fy7zFRgA3vPbIDm4j" ;
+    sdt:source "Pset_Material:Material=Concrete",
+        "Pset_Material:Thickness_mm=250.0" .
+
+sdt:0yfQ4w7Lj0sPd3HpJTdJ1S a sdt:Asset ;
+    rdfs:label "Wall_A" ;
+    sdt:ifcGUID "0yfQ4w7Lj0sPd3HpJTdJ1S" ;
+    sdt:source "Pset_Material:Material=Brick",
+        "Pset_Material:Thickness_mm=150.0" .
+
+sdt:1o_x_5kYn9nwQ3hC3UEfXv a sdt:Asset ;
+    rdfs:label "Lobby" ;
+    sdt:ifcGUID "1o_x_5kYn9nwQ3hC3UEfXv" ;
+    sdt:source "Pset_Area:GrossArea_m2=60.0",
+        "Pset_Area:Volume_m3=160.0" .
+
+sdt:1tKIAqlgbFtPIZKr3wVMGR a sosa:Sensor ;
+    rdfs:label "TempSensor_AHU" ;
+    sdt:ifcGUID "1tKIAqlgbFtPIZKr3wVMGR" ;
+    sdt:source "Pset_Sensor:SensorType=TEMPERATURE" .
+
+sdt:21ZxlWesX4pAIf7ApAQsd1 a sdt:Asset ;
+    rdfs:label "Lab_201" ;
+    sdt:ifcGUID "21ZxlWesX4pAIf7ApAQsd1" ;
+    sdt:source "Pset_Area:GrossArea_m2=70.0",
+        "Pset_Area:Volume_m3=200.0" .
+
+<http://builtinsight.io/ontology/sdt#2O$oQEzFbA4vpp15yuyEd0_operationalResult> a sdt:OperationalCarbonResult ;
+    sdt:aboutAsset <http://builtinsight.io/ontology/sdt#2O$oQEzFbA4vpp15yuyEd0> ;
+    sdt:hasModule sdt:B6 ;
+    sdt:timestamp "2025-10-08T13:00:00+00:00"^^xsd:dateTime ;
+    sdt:unit "unknown" ;
+    sdt:value 125.0 .
+
+<http://builtinsight.io/ontology/sdt#2quLgSp9P4MfwQUxy2mSF$> a sosa:Sensor ;
+    rdfs:label "CO2Sensor_Lab" ;
+    sdt:ifcGUID "2quLgSp9P4MfwQUxy2mSF$" ;
+    sdt:source "Pset_Sensor:SensorType=CO2" .
+
+sdt:2vMXCLM8jBU9fBDz_3QufW a sosa:Sensor ;
+    rdfs:label "LightSensor_Lobby" ;
+    sdt:ifcGUID "2vMXCLM8jBU9fBDz_3QufW" ;
+    sdt:source "Pset_Sensor:SensorType=ILLUMINANCE" .
+
+sdt:3b6apx221DWRmFus5eS2TV_operationalResult a sdt:OperationalCarbonResult ;
+    sdt:aboutAsset sdt:3b6apx221DWRmFus5eS2TV ;
+    sdt:hasModule sdt:B6 ;
+    sdt:timestamp "2025-10-08T13:00:00+00:00"^^xsd:dateTime ;
+    sdt:unit "kWh" ;
+    sdt:value 3.5 .
+
+<http://builtinsight.io/ontology/sdt#2O$oQEzFbA4vpp15yuyEd0> a sdt:Asset ;
+    rdfs:label "Roof_A" ;
+    sdt:ifcGUID "2O$oQEzFbA4vpp15yuyEd0" ;
+    sdt:source "Pset_EnergyUse:EnergyUse_kWh=125.0",
+        "Pset_Material:Material=Concrete",
+        "Pset_Material:Thickness_mm=200.0" .
+
+sdt:3b6apx221DWRmFus5eS2TV a sdt:Asset ;
+    rdfs:label "AHU_1" ;
+    sdt:ifcGUID "3b6apx221DWRmFus5eS2TV" ;
+    sdt:source "Pset_AHU_Performance:Efficiency=0.88",
+        "Pset_AHU_Performance:FlowRate_m3h=1200.0",
+        "Pset_AHU_Performance:Power_kW=3.5",
+        "Pset_Equipment:FlowRate_m3h=1200.0",
+        "Pset_Equipment:PowerRating_kW=3.5" .
+

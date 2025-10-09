@@ -1,0 +1,23 @@
+#################################################################
+# SDT Ontology Import Manifest (Offline / Local Version)
+# File: sdt_imports_local.ttl
+# Purpose: Use local ontology copies for reproducible builds
+#################################################################
+
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sdt:  <http://builtinsight.io/ontology/sdt#> .
+
+<http://builtinsight.io/ontology/sdt>
+    a owl:Ontology ;
+    rdfs:label "Semantic Digital Thread (SDT) Ontology Import Manifest – Local Version" ;
+    owl:imports
+        <file:///import/ontologies/sosa.ttl> ,
+        <file:///import/ontologies/prov-o.ttl> ,
+        <file:///import/ontologies/IFC4_ADD2.ttl> ,
+        <file:///import/ontologies/time.ttl> ,
+        <file:///import/ontologies/voaf.ttl> ;
+    rdfs:comment """
+    Local manifest for SDT ontology. All dependencies resolved from local /import/ontologies directory.
+    Recommended for offline Neo4j or Docker testbeds to ensure reproducibility and performance.
+    """ .

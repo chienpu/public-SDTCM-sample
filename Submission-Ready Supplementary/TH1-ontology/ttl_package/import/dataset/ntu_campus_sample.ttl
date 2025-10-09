@@ -1,0 +1,63 @@
+@prefix sdt: <http://builtinsight.io/ontology/sdt#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+#################################################################
+# 1. Assets and Sensors
+#################################################################
+
+sdt:Asset001 a sdt:Asset ;
+    sdt:hasModule sdt:ModuleB6 ;
+    sdt:assetName "NTU Civil Engineering Building" .
+
+sdt:Sensor_01 a sosa:Sensor ;
+    sdt:monitors sdt:Asset001 ;
+    sdt:sensorName "Power Meter Sensor - AHU12_T1" .
+
+#################################################################
+# 2. Observations (All Valid)
+#################################################################
+
+# Observation 1 – electricity usage measurement (valid)
+sdt:Obs001 a sosa:Observation ;
+    sosa:madeBySensor sdt:Sensor_01 ;
+    sosa:hasFeatureOfInterest sdt:Asset001 ;
+    sosa:observedProperty sdt:ElectricityUsage ;
+    sosa:resultTime "2024-05-01T08:00:00Z"^^xsd:dateTime ;
+    sosa:hasResult sdt:PerformanceData001 .
+
+# Observation 2 – next reading (also valid now)
+sdt:Obs002 a sosa:Observation ;
+    sosa:madeBySensor sdt:Sensor_01 ;
+    sosa:hasFeatureOfInterest sdt:Asset001 ;
+    sosa:observedProperty sdt:ElectricityUsage ;
+    sosa:resultTime "2024-05-01T09:00:00Z"^^xsd:dateTime ;
+    sosa:hasResult sdt:PerformanceData002 .
+
+#################################################################
+# 3. Performance Data
+#################################################################
+
+sdt:PerformanceData001 a sdt:PerformanceData ;
+    sdt:hasQuantity "125.6"^^xsd:decimal ;
+    sdt:unit "kWh" .
+
+sdt:PerformanceData002 a sdt:PerformanceData ;
+    sdt:hasQuantity "131.4"^^xsd:decimal ;
+    sdt:unit "kWh" .
+
+#################################################################
+# 4. Provenance Example (optional)
+#################################################################
+
+sdt:Obs001 prov:wasGeneratedBy sdt:EnergyMonitoringActivity ;
+    prov:wasAttributedTo sdt:BuildingEnergySystem .
+
+sdt:EnergyMonitoringActivity a prov:Activity ;
+    prov:used sdt:Sensor_01 ;
+    prov:wasAttributedTo sdt:BuildingEnergySystem .
+
+sdt:BuildingEnergySystem a prov:Agent ;
+    rdfs:label "NTU Building Energy Management System" .

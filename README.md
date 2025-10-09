@@ -84,7 +84,7 @@ Additional files:
 After deployment:  
 
 1. **Ontology schema loaded**  
-```cypher
+...........
 CALL db.schema.visualization()
 ```  
 

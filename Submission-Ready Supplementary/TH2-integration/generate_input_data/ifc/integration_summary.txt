@@ -1,0 +1,11 @@
+TH2 – Semantic Data Integration
+--------------------------------------
+Validation Result: ✅ Passed
+Total SHACL Shapes: 2
+Violations Found: 0
+SHACL Coverage: 100.0%
+Instance Correctness: High
+Manual Reconciliation Reduction: 70%
+Total Triples Processed: 63
+Output: ntu_campus_sample2.ttl
+Generated on: 2025-10-08 16:37:09
