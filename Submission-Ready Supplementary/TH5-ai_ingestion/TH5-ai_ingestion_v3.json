@@ -1,0 +1,215 @@
+{
+  "name": "TH5-ai_ingestion",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "13YfHOg2ZbSI7Q8Lyasl5UGh1N-g9Py_KlxyBTEG8Djc",
+          "mode": "list",
+          "cachedResultName": "TH5_IFC_LCA_Construction",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13YfHOg2ZbSI7Q8Lyasl5UGh1N-g9Py_KlxyBTEG8Djc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13YfHOg2ZbSI7Q8Lyasl5UGh1N-g9Py_KlxyBTEG8Djc/edit#gid=0"
+        },
+        "options": {
+          "columnsToWatch": [
+            "Quantity",
+            "EmissionFactor",
+            "ObservationID",
+            "ObservationType",
+            "IFC_Class",
+            "Activity",
+            "LifecycleModule",
+            "Unit",
+            "CarbonResult",
+            "Timestamp",
+            "Description"
+          ],
+          "dataLocationOnSheet": {
+            "values": {
+              "rangeDefinition": "specifyRange"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -144,
+        -80
+      ],
+      "id": "491faaf9-fe80-4eae-b924-3ef728bd4a2a",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "OXXocqZtanGZ0eji",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{\n  JSON.stringify({\n    model: \"gpt-4o\",\n    temperature: 0.1,\n    messages: [\n      {\n        role: \"system\",\n        content: `\nYou are an ontology-driven data ingestion assistant for the Semantic Digital Thread (SDT) framework.\nYour task is to convert structured construction lifecycle carbon observations into fully linked RDF/Turtle graphs \nthat follow SDT ontology conventions and lifecycle provenance rules.\n\n### PREFIXES\nAlways begin with these prefix declarations:\n@prefix sdt: <http://builtinsight.io/ontology/sdt#> .\n@prefix sosa: <http://www.w3.org/ns/sosa/> .\n@prefix prov: <http://www.w3.org/ns/prov#> .\n@prefix provx: <http://builtinsight.io/resource/prov/> .\n@prefix ifc: <http://ifcowl.openbimstandards.org/IFC4x3#> .\n@prefix ex: <http://builtinsight.io/resource/> .\n@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n\n### RDF CONSTRUCTION RULES\n\n1️⃣ **Observation Node**\n- Create one main observation node per record:\n  ex:Observation_<ObservationID> a sosa:Observation ;\n  sosa:featureOfInterest <IFC_Class_URI> ;\n  sdt:Quantity <Quantity> ;\n  sdt:Unit \"<Unit>\" ;\n  sdt:EmissionFactor <EmissionFactor> ;\n  sdt:CarbonResult ex:CarbonResult_<ObservationID> ;\n  prov:generatedAtTime \"<Timestamp>\"^^xsd:dateTime ;\n  prov:wasGeneratedBy provx:Activity_<ObservationID>_<Timestamp> ;   # 🔹 新增: 明確指向 provenance 活動\n  rdfs:label \"Observation <ObservationID> – <Description>\" ;\n  prov:wasDerivedFrom ex:LifecycleModule_<LifecycleModule>, ex:Activity_<Activity>, ex:CarbonResult_<ObservationID> .\n\n2️⃣ **Lifecycle Module Node**\n- ex:LifecycleModule_<LifecycleModule> a sdt:LifecycleModule ;\n  rdfs:label \"Lifecycle Module <LifecycleModule>\" ;\n  prov:wasDerivedFrom ex:Observation_<ObservationID> .\n\n3️⃣ **Activity Node**\n- ex:Activity_<Activity> a sdt:Activity ;\n  rdfs:label \"Activity <Activity>\" ;\n  prov:wasDerivedFrom ex:Observation_<ObservationID> .\n\n4️⃣ **Carbon Result Node**\n- ex:CarbonResult_<ObservationID> a sdt:CarbonResult ;\n  sdt:value <CarbonResult> ;\n  rdfs:label \"Carbon Result for Observation <ObservationID>\" ;\n  prov:wasDerivedFrom ex:Observation_<ObservationID> .\n\n5️⃣ **Provenance Activity Node**\n- provx:Activity_<ObservationID>_<Timestamp> a prov:Activity ;\n  prov:used ex:Observation_<ObservationID> ;\n  prov:wasAssociatedWith ex:Observation_<ObservationID> ;   # 🔹 新增: 雙向關聯 Observation\n  prov:generated ex:LifecycleModule_<LifecycleModule>, ex:Activity_<Activity>, ex:CarbonResult_<ObservationID> ;\n  prov:generatedAtTime \"<Timestamp>\"^^xsd:dateTime ;\n  rdfs:label \"Provenance Activity for Observation <ObservationID> at <Timestamp>\" .\n\n6️⃣ **IFC Resource Node**\n- For every IFC_Class used, add:\n  <IFC_Class_URI> a sosa:FeatureOfInterest ;\n  rdfs:label \"<localName>\" .\n  (The localName is the part after the '#' in the URI, e.g. IfcBeam)\n\n7️⃣ **Formatting**\n- All numeric fields (Quantity, EmissionFactor, CarbonResult) must be numeric literals.\n- Output must be valid Turtle (.ttl) syntax only.\n- No code fences, no English explanations, no comments.\n        `\n      },\n      {\n        role: \"user\",\n        content:\n          \"Convert this spreadsheet record into a complete RDF/Turtle graph following the SDT ontology and rules:\\n\" +\n          JSON.stringify($json, null, 2)\n      }\n    ]\n  })\n}}\n\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        64,
+        -80
+      ],
+      "id": "d02e1c77-6051-4f97-86aa-68f693f1c81f",
+      "name": "AI_ETL",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "5MiqPJQvmX9GQknp",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// === AI_Response_Parser v2.2 ===\n// Cleans RDF output from GPT and ensures Neo4j-safe Turtle serialization\n\nconst response = $input.first().json;\nconst rawRDF = response.choices?.[0]?.message?.content || \"\";\n\n// 🧩 尋找 @prefix 起點\nconst rdfStart = rawRDF.indexOf(\"@prefix\");\nif (rdfStart === -1) {\n  throw new Error(\"No '@prefix' found in AI output. Check AI_ETL result or model format.\");\n}\n\n// 🧹 清理 Markdown、引號與特殊符號\nconst cleaned = rawRDF\n  .substring(rdfStart)\n  .replace(/```turtle|```/gi, \"\")   // 移除 Markdown\n  .replace(/\\\\n/g, \"\\n\")            // 修正轉義換行\n  .replace(/\\r/g, \"\")               // 移除 CR 符號\n  .replace(/[“”]/g, '\"')            // 替換全形引號\n  .replace(/[‘’]/g, \"'\")            // 替換全形單引號\n  .replace(/\\s+$/g, \"\")             // 移除尾端空白\n  .trim();\n\n// ✅ 回傳 RDF 與 metadata\nreturn [\n  {\n    json: {\n      rdf_content: cleaned,\n      observation_id: response.id || null,\n      model: response.model || \"gpt-4o\",\n      timestamp: new Date().toISOString()\n    }\n  }\n];\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        272,
+        -80
+      ],
+      "id": "b535b3f8-0caa-4abf-ba2d-0afdffbe9f7a",
+      "name": "AI_Response_Parser"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://10.0.0.180:7474/db/neo4j/tx/commit",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"statements\": [\n    {\n      \"statement\": \"CALL n10s.rdf.import.inline($rdf, 'Turtle')\",\n      \"parameters\": {\n        \"rdf\": {{ JSON.stringify($json[\"rdf_content\"]) }}\n      }\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        704,
+        -80
+      ],
+      "id": "4b0d5597-3c63-4e3c-801d-79e9942d5607",
+      "name": "Neo4j_Write_RDF",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "nFOsWspuYuAz5AV6",
+          "name": "Neo4j_Local"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// === Extract_RDF_Content v3.1 ===\n// 清理 RDF Turtle 字串，並轉換非法空白字元，適合傳入 Neo4j n10s.import.inline()\n\nconst content = $json?.rdf_content;\n\nif (typeof content !== 'string' || !content.includes('@prefix')) {\n\tthrow new Error(\"Invalid or missing RDF content in pipeline.\");\n}\n\n// 🧹 初步清理：移除多餘符號與換行\nlet rdf = content\n\t.replace(/```/g, '')\n\t.replace(/\\r/g, '')\n\t.replace(/\\\\n/g, '\\n')\n\t.replace(/\\\\\"/g, '\"')\n\t.trim();\n\n// ✅ 將 URI 中的空格轉為合法的 %20\nrdf = rdf.replace(/<([^>]*?)>/g, (match, p1) => {\n\treturn `<${p1.replace(/ /g, '%20')}>`;\n});\n\n// ✅ 製作 cleaned_rdf：處理反斜線與換行為單行字串，適合輸出至 Neo4j\nconst cleaned_rdf = rdf\n\t.replace(/\\\\/g, \"\\\\\\\\\")       // 跳脫反斜線\n\t.replace(/\\r?\\n|\\r/g, ' ')    // 換行變空格，保持單行\n\t.trim();\n\nreturn [{\n\tjson: {\n\t\trdf_content: rdf,\n\t\tcleaned_rdf: cleaned_rdf\n\t}\n}];\n\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        496,
+        -80
+      ],
+      "id": "3cc42530-491a-443a-a8a3-be5f8a37ad55",
+      "name": "Extract_RDF_Content"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI_ETL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI_ETL": {
+      "main": [
+        [
+          {
+            "node": "AI_Response_Parser",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI_Response_Parser": {
+      "main": [
+        [
+          {
+            "node": "Extract_RDF_Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract_RDF_Content": {
+      "main": [
+        [
+          {
+            "node": "Neo4j_Write_RDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "05f82a0d-e80a-471c-b42b-3c87020b9d2b",
+  "meta": {
+    "instanceId": "0866b6da6f8174cd6a5afa13e946ed7b58e79fbf338531c89f0e2f0a08280be5"
+  },
+  "id": "sObo1d8ioIZ6ySOB",
+  "tags": [
+    {
+      "createdAt": "2025-10-09T23:16:32.808Z",
+      "updatedAt": "2025-10-09T23:40:16.879Z",
+      "id": "WTd1DGrbrZd81fPX",
+      "name": "Article_SDTCM"
+    }
+  ]
+}

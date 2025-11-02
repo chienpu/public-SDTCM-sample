@@ -1,0 +1,209 @@
+{
+  "name": "TH5-ai_ingestion",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "13YfHOg2ZbSI7Q8Lyasl5UGh1N-g9Py_KlxyBTEG8Djc",
+          "mode": "list",
+          "cachedResultName": "TH5_IFC_LCA_Construction",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13YfHOg2ZbSI7Q8Lyasl5UGh1N-g9Py_KlxyBTEG8Djc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13YfHOg2ZbSI7Q8Lyasl5UGh1N-g9Py_KlxyBTEG8Djc/edit#gid=0"
+        },
+        "options": {
+          "columnsToWatch": [
+            "Material",
+            "Quantity",
+            "EmissionFactor",
+            "Module"
+          ],
+          "dataLocationOnSheet": {
+            "values": {
+              "rangeDefinition": "specifyRange"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "98a50183-8e97-42ee-8411-2a4d073d1dbd",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "OXXocqZtanGZ0eji",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ \n  JSON.stringify({\n    model: \"gpt-4o\",\n    temperature: 0.2,\n    messages: [\n      {\n        role: \"system\",\n        content: \"You are an ontology mapping assistant that converts construction and LCA data into RDF triples using classes like sdt:Material, sdt:Quantity, sdt:EmissionFactor, and sdt:LifecycleModule.\"\n      },\n      {\n        role: \"user\",\n        content: \"Convert this spreadsheet record into RDF triples with semantic relationships:\\n\" + JSON.stringify($json, null, 2)\n      }\n    ]\n  })\n}}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "53ea06d2-4114-4ea7-9112-b37c7b16879e",
+      "name": "AI_ETL",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "5MiqPJQvmX9GQknp",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const response = $input.first().json;\n\nconst rawRDF = response.choices?.[0]?.message?.content || \"No RDF content found\";\n\n// 找出 @prefix 開始的內容，去掉 GPT 解釋說明\nconst rdfContent = rawRDF.substring(rawRDF.indexOf('@prefix'));\n\nreturn [\n  {\n    json: {\n      rdf_content: rdfContent\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        416,
+        0
+      ],
+      "id": "5763ca9f-649f-4f9b-902d-92cbd7216639",
+      "name": "AI_Response_Parser"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://10.0.0.180:7474/db/neo4j/tx/commit",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"statements\": [\n    {\n      \"statement\": \"CALL n10s.rdf.import.inline($rdf, 'Turtle')\",\n      \"parameters\": {\n        \"rdf\": {{ JSON.stringify($json[\"rdf_content\"]) }}\n      }\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        848,
+        0
+      ],
+      "id": "bf50614c-64ea-4dc9-8309-48bce98056c0",
+      "name": "Neo4j_Write_RDF",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "nFOsWspuYuAz5AV6",
+          "name": "Neo4j_Local"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const content = $json?.rdf_content;\n\nif (typeof content === 'string') {\n\t// 擷取 RDF 開頭位置\n\tconst rdfStart = content.indexOf('@prefix');\n\n\t// 拆成行陣列\n\tconst lines = content.split('\\n');\n\n\t// 從下往上找最後一個 ex: 開頭且以 . 結尾的行，視為 RDF 區塊結尾\n\tlet rdfEndIndex = lines.length;\n\tfor (let i = lines.length - 1; i >= 0; i--) {\n\t\tconst line = lines[i].trim();\n\t\tif (line.startsWith('ex:') && line.endsWith('.')) {\n\t\t\trdfEndIndex = i + 1;\n\t\t\tbreak;\n\t\t}\n\t}\n\n\t// 取出 RDF 區段\n\tconst rdfLines = lines.slice(0, rdfEndIndex);\n\tconst extracted = rdfLines.join('\\n').trim();\n\n\t// ✅ 清理符號、並移除結尾自然語言說明（或改成註解）\n\tconst cleaned = extracted\n\t\t.replace(/```/g, '')\n\t\t.replace(/\\\\n/g, '\\n')\n\t\t.replace(/\\\\\"/g, '\"')\n\t\t.replace(/\\\\`/g, '')\n\t\t.replace(/`/g, '')\n\t\t// 如果你想移除末尾說明行，用這行：\n\t\t.replace(/This RDF representation[\\s\\S]*$/i, '')\n\t\t// 若你想保留末尾說明為註解，可改用這行：\n\t\t// .replace(/^(This RDF representation.*)$/m, '# $1')\n        .replace(/\\bIn\\s*$/, '')   // 🔧 移除最後多餘的 \"In\"\n\t\t.trim();\n\n\treturn [\n\t\t{\n\t\t\tjson: {\n\t\t\t\trdf_content: cleaned\n\t\t\t}\n\t\t}\n\t];\n} else {\n\tthrow new Error(\"Missing or invalid 'rdf_content' in input\");\n}\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        640,
+        0
+      ],
+      "id": "38ed0c3f-a8cc-489d-834b-8f03a662e2a1",
+      "name": "Extract_RDF_Content"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI_ETL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI_ETL": {
+      "main": [
+        [
+          {
+            "node": "AI_Response_Parser",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI_Response_Parser": {
+      "main": [
+        [
+          {
+            "node": "Extract_RDF_Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract_RDF_Content": {
+      "main": [
+        [
+          {
+            "node": "Neo4j_Write_RDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f6897894-26b0-4cb5-a481-b589cad9d47b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0866b6da6f8174cd6a5afa13e946ed7b58e79fbf338531c89f0e2f0a08280be5"
+  },
+  "id": "zrW1xjKS290TS6rN",
+  "tags": [
+    {
+      "createdAt": "2025-10-09T23:16:32.808Z",
+      "updatedAt": "2025-10-09T23:40:16.879Z",
+      "id": "WTd1DGrbrZd81fPX",
+      "name": "Article_SDTCM"
+    }
+  ]
+}
