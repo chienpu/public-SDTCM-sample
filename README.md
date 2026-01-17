@@ -1,4 +1,4 @@
-# Semantic Digital Thread (SDT) – NTU Prototype  
+# Semantic Digital Thread (SDT): Reproducibility Testbed for Lifecycle Carbon Management 
 *A standards-aligned, ontology-driven framework for lifecycle carbon management*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)  
