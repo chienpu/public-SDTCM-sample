@@ -26,7 +26,8 @@ Specifically, the prototype supports:
 - Graph-native **reasoning and anomaly detection** using Cypher  
 - **Workflow-oriented automation** via *n8n* for facility management actions  
 - PROV-enabled **end-to-end traceability** for audit-ready carbon reporting  
-- **AI-assisted ingestion** to reduce manual ontology and data modeling effort  
+- **Illustrative AI-assisted ingestion examples**  
+  (non-evaluative, non-claiming; included for future extensibility discussion)
 - Fully **Dockerized deployment** to support methodological reproducibility  
 
 > ⚠️ **Scope note**  
@@ -35,7 +36,14 @@ Specifically, the prototype supports:
 
 ---
 
-## 🚀 Quickstart (Reproducibility Setup)
+## 🚀 Reproducibility Setup (Conceptual Demonstration)
+
+The provided Docker configuration has been successfully executed in the authors’ environment 
+to validate the end-to-end SDT workflow, including data ingestion, reasoning, automation, and provenance tracking.  
+
+However, due to dependencies on local system configurations (e.g., operating system, Docker version, 
+memory allocation, and port availability), the setup is intended to support methodological reproducibility 
+and workflow inspection rather than guaranteed environment-independent execution.
 
 ```bash
 # 1. Clone repository
@@ -59,6 +67,12 @@ n8n Workflow UI → http://localhost:5678
 ## 📂 Repository Structure (High-Level)
 
 ```
+├── TH1-ontology       # TH1 – Standards-aligned ontology (TBox, schema exports)
+├── TH2-integration    # TH2 – ETL pipelines & sample datasets (IFC, IoT, LCA)
+├── TH3-reasoning      # TH3 – Cypher rules & n8n workflows (reasoning-to-action)
+├── TH4-provenance     # TH4 – PROV-O based provenance queries & lineage examples
+├── TH5-ai_ingestion
+├── TH6-deployment
 /ontologyschema/        # TH1 – Standards-aligned ontology (TBox, schema exports)
 /integration/etl/       # TH2 – ETL pipelines & sample datasets (IFC, IoT, LCA)
 /reasoning/workflows/   # TH3 – Cypher rules & n8n workflows (reasoning-to-action)
@@ -81,7 +95,17 @@ n8n Workflow UI → http://localhost:5678
 | **TH6. Reproducibility** | `/deployment/docker/` | Docker Compose files and container specifications |
 
 ---
+## 🔐 Disclosure and Availability Statement
 
+This repository represents a **submission-ready supplementary artifact** 
+prepared specifically for academic review.
+
+To balance transparency and responsible data governance:
+- Core ontology structures, reasoning patterns, and provenance mechanisms are disclosed.
+- Full domain ontologies, operational thresholds, and raw project datasets are intentionally excluded.
+- Extended materials may be released post-acceptance via archival platforms (e.g., Zenodo).
+
+---
 ## 📜 License  
 
 Released under the [MIT License](LICENSE).
