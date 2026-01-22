@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "."
+		},
+		{
+			"path": "../AI-Agent-Management"
 		}
 	],
 	"settings": {}

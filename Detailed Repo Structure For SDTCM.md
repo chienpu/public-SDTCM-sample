@@ -1,82 +1,64 @@
 # Detailed Repo Structure For SDTCM
-
 ```bash
-.
-├── /ontologyschema/             # TH1 – Standards-aligned ontology (TBox)
-│   ├── ntu_sd_tbox.ttl          # Primary ontology file (Turtle format) defining classes and relations.
-│   ├── tbox_schema.cypher       # Cypher script to load ontology schema and constraints into Neo4j.
-│   ├── tbox_schema.graphml      # Ontology schema export for advanced visualization (e.g., Neo4j Bloom, Gephi).
-│   ├── ontology_diagram.png     # Visual representation of the TBox schema (e.g., Figure M / Fig A.1 style).
-│   ├── shacl_shapes.ttl         # (Optional) SHACL constraints for data validation.
-│   └── docs/                    # Design documentation.
-│       └── TBox_Design_Notes.md # Details on design principles, class definitions, and mappings (BS EN 15978, IFC, SOSA, PROV-O).
+PUBLIC-SDTCM-SAMPLE/
 │
-├── /integration/etl/            # TH2 – ETL pipelines for semantic data integration
-│   ├── scripts/
-│   │   ├── ifc_parser.py        # Python: Parse IFC files, extract entities, generate Cypher for ABox.
-│   │   ├── iot_ingester.py      # Python: Read IoT CSV, create ObservationEvent nodes and relationships.
-│   │   ├── lca_mapper.py        # Python: Process LCA spreadsheets, create CarbonItem instances (EmissionFactor, ActivityQuantity).
-│   │   └── load_ontology.py     # Python: Script to programmatically load the tbox_schema.cypher into Neo4j.
-│   ├── data/raw/                # Sample raw input datasets for ETL.
-│   │   ├── bim/NTU_BuildingX.ifc
-│   │   ├── iot/NTU_Meter_Readings.csv
-│   │   └── lca/ICE_v4.0.xlsx
-│   ├── data/processed/          # (Optional) Directory for post-ETL data dumps or intermediate formats.
-│   └── logs/                    # Example ETL execution logs for reproducibility and debugging.
+├── TH1-ontology/               # Standards-Aligned Ontology (Interoperability)
+│   ├── ontology_tbox.ttl
+│   ├── ontology_schema.png
+│   ├── schema_description.md
+│   └── README.md
 │
-├── /reasoning/workflows/        # TH3 – Reasoning rules & workflow automation
-│   ├── cypher_rules/
-│   │   ├── anomaly_detection.cql # Cypher: Core reasoning query for energy anomaly detection.
-│   │   ├── carbon_flow_inference.cql # Cypher: Rules for inferring carbon flows (DuPont decomposition).
-│   │   └── validation_metrics.cql # Cypher: Queries for calculating validation metrics.
-│   ├── n8n_workflows/
-│   │   ├── anomaly_alert.json    # Exported n8n workflow for anomaly notifications (e.g., Figure A.3).
-│   │   ├── carbon_task.json      # n8n workflow for triggering carbon accounting tasks.
-│   │   └── provenance_update.json # n8n workflow to update PROV-O entities.
-│   └── screenshots/              # Visual documentation of workflows.
-│       └── n8n_workflow_example.png # Screenshot of n8n visual editor (e.g., Fig A.3).
+├── TH2-integration/            # Semantic Data Integration (ETL & SHACL)
+│   ├── etl_main.py
+│   ├── input_data/
+│   │   ├── NTU_BuildingX.ifc
+│   │   ├── B6_Energy_1month.csv
+│   │   └── LCA_sample.xlsx
+│   ├── output/
+│   │   ├── neo4j_import.csv
+│   │   └── validation_report.ttl
+│   ├── etl_workflow_diagram.png
+│   └── README.md
 │
-├── /provenance/queries/         # TH4 – Provenance & traceability scripts
-│   ├── cypher/
-│   │   ├── trace_lineage.cql     # Cypher: Query to expand path for carbon item inputs (ActivityQuantity, EF, etc.).
-│   │   ├── accountability.cql    # Cypher: Query to find Agents responsible for computations.
-│   │   └── audit_workflow.cql    # Cypher: Query to inspect n8n workflow provenance.
-│   ├── neo4j_snapshots/          # Example provenance data.
-│   │   ├── provenance_graph.dump # Exported Neo4j subgraph demonstrating provenance.
-│   │   └── provenance_graph.png  # Example visualization of a provenance graph (e.g., Fig A.4).
-│   └── docs/                     # Provenance model documentation.
-│       └── provenance_model.md   # Explanations mapping PROV-O concepts to TBox entities.
+├── TH3-reasoning/              # Reasoning-to-Action (Graph-native Rules)
+│   ├── rules/
+│   │   ├── anomaly_detection.cypher
+│   │   └── maintenance_trigger.cypher
+│   ├── n8n_workflow_template.json
+│   ├── workflow_execution_log.png
+│   └── README.md
 │
-├── /ai_ingestion/               # TH5 – AI-assisted ontology & data ingestion
-│   ├── scripts/
-│   │   ├── ai_text2ontology.py    # Python: Parse text (e.g., BS EN 15978) using LLMs to suggest ontology fragments.
-│   │   ├── ai_spreadsheet_mapper.py # Python: Use LLMs to derive mapping logic for LCA spreadsheets.
-│   │   └── postprocess.py         # Python: Refine AI-generated output into valid Cypher/RDF.
-│   ├── samples/                   # Sample unstructured data for AI processing.
-│   │   ├── bs_en_15978_extract.txt # Text excerpt from a standard.
-│   │   ├── lca_sample.xlsx        # Unstructured LCA spreadsheet example.
-│   │   └── generated_triples.ttl  # Example of AI-generated RDF output.
-│   ├── outputs/                   # Directory for AI script outputs.
-│   │   ├── ai_generated_cypher.cql # Example Cypher from AI parsing.
-│   │   └── ontology_fragments.ttl  # Example ontology fragments generated by AI.
-│   └── evaluation.md              # Documentation on AI model performance, accuracy, and manual correction strategies.
+├── TH4-provenance/             # Provenance Traceability (PROV-O)
+│   ├── provenance_query.cypher
+│   ├── bloom_lineage_example.png
+│   ├── provenance_chain.ttl
+│   └── README.md
 │
-├── /deployment/docker/          # TH6 – Reproducibility and deployment utilities
-│   ├── docker-compose.yml       # Defines and orchestrates all microservices (Neo4j, n8n, Python ETL).
-│   ├── Dockerfile.neo4j         # Dockerfile for a customized Neo4j image (e.g., pre-installed APOC, GDS).
-│   ├── Dockerfile.etl           # Dockerfile for the Python ETL environment and its dependencies.
-│   ├── Dockerfile.n8n           # Dockerfile for the n8n workflow engine.
-│   ├── .env.example             # Example environment variables (Neo4j password, n8n keys, LLM API keys).
-│   ├── version_log.md           # Log of key software versions (Neo4j, n8n, Python, APOC) for compatibility.
-│   └── healthcheck.sh           # Script to verify service readiness (e.g., Neo4j ready before ETL starts).
+├── TH5-ai_ingestion/           # AI-assisted Ontology & Data Ingestion
+│   ├── ai_parser.ipynb
+│   ├── lca_input_sample.xlsx
+│   ├── generated_triples.ttl
+│   ├── refinement_example.png
+│   └── README.md
 │
-├── README.md                    # Project overview, quick start, usage guide, validation steps, and citation information.
-├── LICENSE                      # Open-source license (e.g., MIT, Apache-2.0).
-├── CONTRIBUTING.md              # Guidelines for external collaborators.
-├── requirements.txt             # Python dependencies for the ETL container.
-└── .gitignore                   # Specifies intentionally untracked files (e.g., real .env, large data dumps).
-
-
-
-
+├── TH6-deployment/             # Reproducibility (Dockerized System)
+│   ├── docker-compose.yml
+│   ├── Dockerfile.neo4j
+│   ├── Dockerfile.etl
+│   ├── Dockerfile.n8n
+│   ├── init.sh
+│   ├── deployment_overview.png
+│   └── README.md
+│
+├── docker/                     # Optional (Zenodo release, post-acceptance)
+│   ├── volumes/
+│   │   ├── ontology/
+│   │   ├── data/
+│   │   ├── workflows/
+│   │   └── logs/
+│   └── init.sh
+│
+├── SUMMARY.md                  # Summary of Validation Results (Table 6)
+├── LICENSE
+└── README.md                   # Main project overview (for reviewer)
 ```
