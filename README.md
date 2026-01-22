@@ -2,7 +2,7 @@
 *A standards-aligned, ontology-driven framework for lifecycle carbon management*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)  
-[![Docker](https://img.shields.io/badge/docker-compose-blue.svg)](deployment/docker/docker-compose.yml)
+[![Docker](https://img.shields.io/badge/docker-compose-blue.svg)](docker/docker-compose.yml)
 
 ---
 
