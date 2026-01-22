@@ -50,46 +50,21 @@ PUBLIC-SDTCM-SAMPLE/
 │   ├── deployment_overview.png
 │   └── README.md
 │
-├── docker/                     # Optional (Zenodo release, post-acceptance)
-│   ├── volumes/
-│   │   ├── ontology/
+├── docker/
+│   ├── docker-compose.yml
+│   ├── data/              # BIM / IoT / LCA input datasets (CSV/JSON)
+│   ├── etl/
+│   │   └── run_etl.py     # Python ETL entry point
+│   ├── outputs/           # Exported results (optional)
+│   ├── neo4j/
+│   │   ├── init.cypher    # Constraints, ontology loading, demo queries
 │   │   ├── data/
-│   │   ├── workflows/
+│   │   ├── import/
 │   │   └── logs/
-│   └── init.sh
+│   └── n8n/               # Optional orchestration workflows
 │
-├── SUMMARY.md                  # Summary of Validation Results (Table 6)
+├── Detailed Repo Structure For SDTCM.md
 ├── LICENSE
 └── README.md                   # Main project overview (for reviewer)
-
-public-SDTCM-sample/
-│
-├── TH1-ontology/
-│   ├── ontology_schema.png      # Fig. X in paper
-│   ├── ontology_core.ttl        # Minimal TBox only
-│   └── README.md                # Design rationale & standards alignment
-│
-├── TH2-integration/
-│   ├── integration_workflow.png # ETL / integration diagram (from paper)
-│   └── README.md                # Mapping explanation (no code)
-│
-├── TH3-reasoning/
-│   ├── example_rule.cypher      # 1–2 representative rules
-│   ├── reasoning_chain.png      # Sensor → Anomaly → Task
-│   └── README.md                # Traversal-based reasoning explanation
-│
-├── TH4-provenance/
-│   ├── provenance_pattern.ttl   # Minimal PROV-O pattern
-│   ├── lineage_query.cypher     # Example query
-│   ├── provenance_example.png
-│   └── README.md
-│
-├── TH6-deployment/
-│   ├── deployment_overview.png  # Architecture diagram
-│   └── README.md                # Executed by authors; environment-dependent
-│
-├── SUMMARY.md                   # Table 6 counterpart
-├── README.md                    # Reviewer-facing overview
-└── LICENSE
 
 ```
