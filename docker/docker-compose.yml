@@ -1,0 +1,75 @@
+version: "3.9"
+
+# SDT Reproducibility Testbed for Lifecycle Carbon Management
+# Aligned with Figure: Data Sources -> Python ETL -> Neo4j (TBox/ABox + Reasoning/PROV) -> Visualization
+# Optional orchestration layer: n8n (workflow automation / agents)
+
+services:
+
+  # (1) Graph-native SDT backbone: ontology + data (TBox/ABox) + reasoning + provenance annotations
+  neo4j:
+    image: neo4j:5.15
+    container_name: sdt-neo4j
+    ports:
+      - "7474:7474"   # Browser
+      - "7687:7687"   # Bolt
+    environment:
+      NEO4J_AUTH: "neo4j/testpassword"
+      NEO4J_PLUGINS: '["apoc"]'
+      # Allow APOC import/export for reproducible demos (local files in ./neo4j/import)
+      NEO4J_apoc_import_file_enabled: "true"
+      NEO4J_apoc_export_file_enabled: "true"
+    volumes:
+      - ./neo4j/data:/data
+      - ./neo4j/logs:/logs
+      - ./neo4j/import:/import
+      # Bootstrap (constraints, TBox load, ABox seed, demo queries)
+      - ./neo4j/init.cypher:/docker-entrypoint-initdb.d/init.cypher:ro
+    restart: unless-stopped
+
+  # (2) Python ETL: preprocess & ingest BIM/IoT/LCA into Neo4j (ABox instantiation)
+  # This container is intentionally lightweight and script-driven for research reproducibility.
+  etl:
+    image: python:3.11-slim
+    container_name: sdt-etl
+    depends_on:
+      - neo4j
+    environment:
+      NEO4J_URI: "bolt://neo4j:7687"
+      NEO4J_USER: "neo4j"
+      NEO4J_PASSWORD: "testpassword"
+      # Optional: choose which demo pipeline to run (e.g., campus_lca, hvac_energy)
+      SDT_PIPELINE: "demo"
+    volumes:
+      - ./etl:/app
+      - ./data:/app/data:ro
+      - ./outputs:/app/outputs
+    working_dir: /app
+    # Repo should provide: ./etl/run_etl.py
+    command: ["python", "run_etl.py"]
+    restart: "no"
+
+  # (3) Workflow orchestration (optional): n8n for automation tasks / agents (ingestion, orchestration, reasoning)
+  # Kept optional to avoid over-engineering in academic reproducibility packages.
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: sdt-n8n
+    profiles: ["orchestration"]     # enable only when needed
+    depends_on:
+      - neo4j
+    ports:
+      - "5678:5678"                 # n8n UI
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=false
+      - N8N_DIAGNOSTICS_ENABLED=false
+      - N8N_PERSONALIZATION_ENABLED=false
+      - N8N_ENCRYPTION_KEY=sdt-demo-key
+      - TZ=America/Chicago
+    volumes:
+      - ./n8n:/home/node/.n8n
+      - ./n8n/workflows:/workflows
+    restart: unless-stopped
+
+networks:
+  default:
+    name: sdt-testbed-network
