@@ -71,14 +71,9 @@ n8n Workflow UI → http://localhost:5678
 ├── TH2-integration    # TH2 – ETL pipelines & sample datasets (IFC, IoT, LCA)
 ├── TH3-reasoning      # TH3 – Cypher rules & n8n workflows (reasoning-to-action)
 ├── TH4-provenance     # TH4 – PROV-O based provenance queries & lineage examples
-├── TH5-ai_ingestion
-├── TH6-deployment
-/ontologyschema/        # TH1 – Standards-aligned ontology (TBox, schema exports)
-/integration/etl/       # TH2 – ETL pipelines & sample datasets (IFC, IoT, LCA)
-/reasoning/workflows/   # TH3 – Cypher rules & n8n workflows (reasoning-to-action)
-/provenance/queries/    # TH4 – PROV-O based provenance queries & lineage examples
-/ai_ingestion/          # TH5 – AI-assisted ingestion (scripts, samples, outputs)
-/deployment/docker/     # TH6 – Docker Compose setup for reproducibility
+├── TH5-ai_ingestion   # TH5 – AI-assisted ingestion (scripts, samples, outputs)
+├── TH6-deployment     # TH6 – Docker Compose setup for reproducibility
+
 ```
 
 ---
